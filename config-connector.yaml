@@ -1,0 +1,10 @@
+apiVersion: core.cnrm.cloud.google.com/v1beta1
+kind: ConfigConnector
+metadata:
+  # the name is restricted to ensure that there is only one
+  # ConfigConnector resource installed in your cluster
+  name: configconnector.core.cnrm.cloud.google.com
+spec:
+ mode: cluster
+ # TODO make this a helm chart and take project and service account from Terraform
+ googleServiceAccount: "terraform-test-cnrm@terraform-test-318803.iam.gserviceaccount.com"

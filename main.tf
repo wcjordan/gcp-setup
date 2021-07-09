@@ -1,5 +1,3 @@
-# TODO (jordan) Setup workload identity
-
 variable "project_id" {
   default     = ""
   description = "project ID to use"
@@ -31,10 +29,46 @@ provider "google" {
 
 data "google_client_config" "this" {}
 
+
+# CNRM Config Connector service account
+resource "google_service_account" "cnrm" {
+  account_id   = "${var.project_name}-cnrm"
+  display_name = "${var.project_name} CNRM Config Connector service account"
+}
+
+data "google_iam_policy" "project_cnrm" {
+  binding {
+    role = "roles/owner"
+    members = [
+      "serviceAccount:${google_service_account.gke.email}",
+    ]
+  }
+}
+
+resource "google_project_iam_policy" "cnrm" {
+  project     = ${var.project_id}
+  policy_data = data.google_iam_policy.project_cnrm.policy_data
+}
+
+data "google_iam_policy" "cnrm" {
+  binding {
+    role = "roles/iam.workloadIdentityUser"
+    members = [
+      "serviceAccount:${var.project_id}.svc.id.goog[cnrm-system/cnrm-controller-manager]",
+    ]
+  }
+}
+
+resource "google_service_account_iam_policy" "cnrm" {
+  service_account_id = google_service_account.cnrm.name
+  policy_data        = data.google_iam_policy.cnrm.policy_data
+}
+
+
 # GKE service account
-resource "google_service_account" "default" {
-  account_id   = "${var.project_name}-gke-sa-id"
-  display_name = "${var.project_name}-gke-sa"
+resource "google_service_account" "gke" {
+  account_id   = "${var.project_name}-gke"
+  display_name = "${var.project_name} GKE node service account"
 }
 
 # GKE cluster
@@ -88,7 +122,7 @@ resource "google_container_node_pool" "primary_nodes" {
       enable_secure_boot = true
     }
 
-    service_account = google_service_account.default.email
+    service_account = google_service_account.gke.email
     oauth_scopes = [
       "https://www.googleapis.com/auth/logging.write",
       "https://www.googleapis.com/auth/monitoring",
