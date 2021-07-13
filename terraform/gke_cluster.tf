@@ -1,0 +1,76 @@
+# GKE service account
+resource "google_service_account" "gke" {
+  account_id   = "${var.project_name}-gke"
+  display_name = "${var.project_name} GKE node service account"
+}
+
+resource "google_project_iam_member" "gke_gcr" {
+  project = var.project_id
+  role    = "roles/storage.objectViewer"
+  member  = "serviceAccount:${google_service_account.gke.email}"
+}
+
+# GKE cluster
+resource "google_container_cluster" "primary" {
+  name = "${var.project_name}-gke"
+
+  enable_shielded_nodes = true
+  release_channel {
+    channel = "RAPID"
+  }
+  workload_identity_config {
+    identity_namespace = "${var.project_id}.svc.id.goog"
+  }
+  addons_config {
+    config_connector_config {
+      enabled = true
+    }
+  }
+
+  # We can't create a cluster with no node pool defined, but we want to only use
+  # separately managed node pools. So we create the smallest possible default
+  # node pool and immediately delete it.
+  remove_default_node_pool = true
+  initial_node_count       = 1
+}
+
+# Separately Managed Node Pool which allows Terraform to manage it
+resource "google_container_node_pool" "primary_nodes" {
+  name    = "${var.project_name}-gke-node-pool"
+  cluster = google_container_cluster.primary.name
+
+  initial_node_count = 1
+  autoscaling {
+    min_node_count = 1
+    max_node_count = 3
+  }
+
+  node_config {
+    preemptible  = true
+    machine_type = "e2-standard-4"
+    tags         = ["gke-node", "${var.project_name}-gke"]
+    metadata = {
+      disable-legacy-endpoints = "true"
+    }
+    labels = {
+      env = var.project_name
+    }
+    workload_metadata_config {
+      node_metadata = "GKE_METADATA_SERVER"
+    }
+    shielded_instance_config {
+      enable_secure_boot = true
+    }
+
+    # Works around an issue where Terraform tries to update the node pool when nothing's changed
+    kubelet_config {
+      cpu_manager_policy = "none"
+      cpu_cfs_quota      = null
+    }
+
+    service_account = google_service_account.gke.email
+    oauth_scopes = [
+      "https://www.googleapis.com/auth/cloud-platform",
+    ]
+  }
+}
