@@ -10,19 +10,42 @@ Enable APIs:
 - [Cloud SQL Admin](https://console.cloud.google.com/apis/library/sqladmin.googleapis.com)
 
 Grant the Terraform service account the roles in the project:
-- roles/editor
-- roles/resourcemanager.projectIamAdmin
-- roles/iam.serviceAccountAdmin
-- roles/compute.instanceAdmin
+- roles/editor (Basic -> Editor)
+- roles/resourcemanager.projectIamAdmin (Resource Manager -> Project IAM Admin)
+- roles/iam.serviceAccountAdmin (Service Account -> Service Account Admin)
+- roles/compute.instanceAdmin (Compute -> Compute Instance Admin (Beta))
 
+Use the GUI categories above or command below
 ```
 gcloud projects add-iam-policy-binding PROJECT_ID \
   --member "serviceAccount:SERVICE_ACCOUNT@PROJECT_ID.iam.gserviceaccount.com" \
   --role ROLE
 ```
 
+Download service account key and place in directory
+```
+mv ~/Downloads/KEY_NAME.json GIT_DIR/gcp-setup/service account_key.json
+```
+
+Init Terraform
+```
+cd GIT_DIR/gcp-setup/terraform
+terraform init
+```
+
 ## Create GKE Cluster
-Run Terraform with `terraform apply`
+Run Terraform with `terraform apply` in terraform directory.
+
+Setup gcloud & kubectl
+```
+gcloud init
+gcloud container clusters get-credentials PROJECT_NAME-gke
+```
+Verify with
+```
+gcloud config configurations list
+kubectl config get-contexts
+```
 
 Also need to annotate the default namespace manually until [issue #692](https://github.com/hashicorp/terraform-provider-kubernetes/issues/692) is complete  
 `kubectl annotate namespace default cnrm.cloud.google.com/project-id=PROJECT_ID`

@@ -2,3 +2,5 @@
 terraform.tfvars
 terraform.tfstate*
 service_account_key.json
+
+.DS_Store
