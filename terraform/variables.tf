@@ -7,3 +7,8 @@ variable "project_name" {
   default     = ""
   description = "project name to use"
 }
+
+variable "dns_name" {
+  default     = ""
+  description = "DNS name to use"
+}
