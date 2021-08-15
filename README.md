@@ -91,22 +91,21 @@ helm repo add bitnami https://charts.bitnami.com/bitnami
 Follow instructions at [Google OAuth Plugin](https://plugins.jenkins.io/google-oauth-plugin/)
 
 #### Create Credentials for Jenkins OAuth
-Navigate to `https://console.cloud.google.com/apis/credentials`
-Be sure you're in the desired project
-Press `Create Credentials => OAuth Client ID => Configure Consent Screen`
-Select `External` users.  In the future explore `Internal` if we use a workspace.
-Fill out the consent screen form.  No scopes are needed.
-Return to initial page.  Press `Create Credentials => OAuth Client ID`
-Type: `Web Application`
-Set domain URI to `http://${JENKINS_ROOT_URL}`
-Set redirect URI to `http://${JENKINS_ROOT_URL}/securityRealm/finishLogin`
-Copy & save the Client ID & Client Secret for setting up the plugin
-For more details see:
-[Google Login Plugin](https://github.com/jenkinsci/google-login-plugin/blob/master/README.md) & [StackOverlow](https://stackoverflow.com/a/55595582)
+Navigate to `https://console.cloud.google.com/apis/credentials`  
+Be sure you're in the desired project  
+Press `Create Credentials => OAuth Client ID => Configure Consent Screen`  
+Select `External` users.  In the future explore `Internal` if we use a workspace.  
+Fill out the consent screen form.  No scopes are needed.  
+Return to initial page.  Press `Create Credentials => OAuth Client ID`  
+Type: `Web Application`  
+Set domain URI to `http://${JENKINS_ROOT_URL}`  
+Set redirect URI to `http://${JENKINS_ROOT_URL}/securityRealm/finishLogin`  
+Copy & save the Client ID & Client Secret for setting up the plugin  
+For more details see [Google Login Plugin](https://github.com/jenkinsci/google-login-plugin/blob/master/README.md) & [StackOverlow](https://stackoverflow.com/a/55595582)
 
 ### Manually install Jenkins Plugins
-Explore installing w/ [Plugin Installationi Manager Tool](https://github.com/jenkinsci/plugin-installation-manager-tool)
-Probably need to extend Docker image which Helm uses
+Explore installing w/ [Plugin Installationi Manager Tool](https://github.com/jenkinsci/plugin-installation-manager-tool)  
+Probably need to extend Docker image which Helm uses  
 
 - Build Failure Analyzer
 - BrowserStack
@@ -119,9 +118,9 @@ Probably need to extend Docker image which Helm uses
 See instructions within each repos README
 
 ### Add Known Failure Causes
-Name: `ClosedChannelException`
-Description: `Node's connection broken.  Consider re-running.`
-Add Build Log Indication w/ pattern: `.*ClosedChannelException.*`
+Name: `ClosedChannelException`  
+Description: `Node's connection broken.  Consider re-running.`  
+Add Build Log Indication w/ pattern: `.*ClosedChannelException.*`  
 
 ### Other
 Under `Configure System`, verify that all `Administrative Monitors` are enabled.
