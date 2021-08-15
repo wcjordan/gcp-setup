@@ -8,7 +8,7 @@ variable "project_name" {
 }
 variable "admin_email" {
   default     = ""
-  description = "Email address of admin.  Used for setting up Jenkins & giving adming permissions to OAuth account"
+  description = "Email address of admin user.  Used for setting up Jenkins & giving admin permissions to OAuth account"
 }
 variable "dns_name" {
   default     = ""
