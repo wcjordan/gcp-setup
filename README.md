@@ -76,7 +76,7 @@ kubectl annotate namespace default cnrm.cloud.google.com/project-id=$PROJECT_ID
 
 ## Setup DNS
 Terraform will setup the DNS, but you may need to set an NS entry in the domain parent zone.
-See https://stackoverflow.com/questions/23356881/manage-only-a-subdomain-with-google-cloud-dns
+See [StackOverflow](https://stackoverflow.com/questions/23356881/manage-only-a-subdomain-with-google-cloud-dns) for more details.
 
 ## Setup Jenkins
 Terraform will create a static IP, DNS entry, and install the Helm chart
@@ -86,7 +86,11 @@ May need to add repo.  Not sure?
 helm repo add bitnami https://charts.bitnami.com/bitnami
 ```
 
-### Create Credentials for Jenkins OAuth
+### Credentials
+#### Create Credentials for GKE
+Follow instructions at [Google OAuth Plugin](https://plugins.jenkins.io/google-oauth-plugin/)
+
+#### Create Credentials for Jenkins OAuth
 Navigate to `https://console.cloud.google.com/apis/credentials`
 Be sure you're in the desired project
 Press `Create Credentials => OAuth Client ID => Configure Consent Screen`
@@ -98,11 +102,10 @@ Set domain URI to `http://${JENKINS_ROOT_URL}`
 Set redirect URI to `http://${JENKINS_ROOT_URL}/securityRealm/finishLogin`
 Copy & save the Client ID & Client Secret for setting up the plugin
 For more details see:
-https://github.com/jenkinsci/google-login-plugin/blob/master/README.md
-https://stackoverflow.com/a/55595582
+[Google Login Plugin](https://github.com/jenkinsci/google-login-plugin/blob/master/README.md) & [StackOverlow](https://stackoverflow.com/a/)55595582
 
 ### Manually install Jenkins Plugins
-Explore installing w/ https://github.com/jenkinsci/plugin-installation-manager-tool
+Explore installing w/ [Plugin Installationi Manager Tool](https://github.com/jenkinsci/plugin-installation-manager-tool)
 Probably need to extend Docker image which Helm uses
 
 - Build Failure Analyzer
