@@ -12,6 +12,7 @@ gcloud services enable iam.googleapis.com
 gcloud services enable container.googleapis.com
 gcloud services enable sqladmin.googleapis.com
 gcloud services enable dns.googleapis.com
+gcloud services enable identitytoolkit.googleapis.com
 ```
 
 Create a service account for Terraform
@@ -32,6 +33,9 @@ gcloud projects add-iam-policy-binding $PROJECT_ID \
 gcloud projects add-iam-policy-binding $PROJECT_ID \
   --member "serviceAccount:$SERVICE_ACCOUNT@$PROJECT_ID.iam.gserviceaccount.com" \
   --role roles/compute.instanceAdmin
+gcloud projects add-iam-policy-binding $PROJECT_ID \
+  --member "serviceAccount:$SERVICE_ACCOUNT@$PROJECT_ID.iam.gserviceaccount.com" \
+  --role roles/container.admin
 ```
 
 Download service account key and place in directory
@@ -82,11 +86,39 @@ May need to add repo.  Not sure?
 helm repo add bitnami https://charts.bitnami.com/bitnami
 ```
 
-Get password for user `user`
-```
-kubectl get secret --namespace default jenkins-ci -o jsonpath="{.data.jenkins-password}" | base64 --decode
-```
+### Create Credentials for Jenkins OAuth
+Navigate to `https://console.cloud.google.com/apis/credentials`
+Be sure you're in the desired project
+Press `Create Credentials => OAuth Client ID => Configure Consent Screen`
+Select `External` users.  In the future explore `Internal` if we use a workspace.
+Fill out the consent screen form.  No scopes are needed.
+Return to initial page.  Press `Create Credentials => OAuth Client ID`
+Type: `Web Application`
+Set domain URI to `http://${JENKINS_ROOT_URL}`
+Set redirect URI to `http://${JENKINS_ROOT_URL}/securityRealm/finishLogin`
+Copy & save the Client ID & Client Secret for setting up the plugin
+For more details see:
+https://github.com/jenkinsci/google-login-plugin/blob/master/README.md
+https://stackoverflow.com/a/55595582
 
-```
-gcloud docker -- push gcr.io/flipperkid-default/jenkins-worker
-```
+### Manually install Jenkins Plugins
+Explore installing w/ https://github.com/jenkinsci/plugin-installation-manager-tool
+Probably need to extend Docker image which Helm uses
+
+- Build Failure Analyzer
+- BrowserStack
+- Google Container Registry Auth
+- Google Login
+- Jenkins Configuration as Code Plugin
+- Kubernetes
+
+### Add Builds
+See instructions within each repos README
+
+### Add Known Failure Causes
+Name: `ClosedChannelException`
+Description: `Node's connection broken.  Consider re-running.`
+Add Build Log Indication w/ pattern: `.*ClosedChannelException.*`
+
+### Other
+Under `Configure System`, verify that all `Administrative Monitors` are enabled.
