@@ -102,7 +102,7 @@ Set domain URI to `http://${JENKINS_ROOT_URL}`
 Set redirect URI to `http://${JENKINS_ROOT_URL}/securityRealm/finishLogin`
 Copy & save the Client ID & Client Secret for setting up the plugin
 For more details see:
-[Google Login Plugin](https://github.com/jenkinsci/google-login-plugin/blob/master/README.md) & [StackOverlow](https://stackoverflow.com/a/)55595582
+[Google Login Plugin](https://github.com/jenkinsci/google-login-plugin/blob/master/README.md) & [StackOverlow](https://stackoverflow.com/a/55595582)
 
 ### Manually install Jenkins Plugins
 Explore installing w/ [Plugin Installationi Manager Tool](https://github.com/jenkinsci/plugin-installation-manager-tool)
