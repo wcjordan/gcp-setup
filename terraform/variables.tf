@@ -15,29 +15,20 @@ variable "dns_name" {
   description = "DNS name to use"
 }
 
-variable "google_service_account_key" {
-  default     = ""
-  description = "Service account key for using GKE"
-}
-
 variable "browserstack_username" {
   default     = ""
   description = "BrowserStack username"
 }
-variable "browserstack_id" {
-  default     = ""
-  description = "BrowserStack ID"
-}
 variable "browserstack_access_key" {
   default     = ""
-  description = "BrowserStack Access Key"
+  description = "BrowserStack access key"
 }
 
 variable "oauth_client_id" {
   default     = ""
-  description = "OAuth Client ID"
+  description = "OAuth client ID"
 }
 variable "oauth_client_secret" {
   default     = ""
-  description = "OAuth Client Secret"
+  description = "OAuth client secret"
 }
