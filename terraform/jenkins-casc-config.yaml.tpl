@@ -3,15 +3,14 @@ credentials:
     domainCredentials:
       - credentials:
         - googleRobotPrivateKey:
-            projectId: "${project_id}"
+            projectId: "gke_key"
             serviceAccountConfig:
               json:
-                secretJsonKey: "${google_service_account_key}"
+                secretJsonKey: $${jenkins/google_service_account_key}
         - browserStack:
-            accesskey: "${browserstack_access_key}"
-            description: "Browserstack credentials"
-            id: "${browserstack_id}"
+            id: "browserstack_key"
             username: "${browserstack_username}"
+            accesskey: $${jenkins/browserstack_access_key}
 jenkins:
   authorizationStrategy:
     globalMatrix:
@@ -21,7 +20,7 @@ jenkins:
   - kubernetes:
       containerCap: 2
       containerCapStr: "2"
-      credentialsId: "${project_id}"
+      credentialsId: "gke_key"
       name: "kubernetes"
       webSocket: true
   globalNodeProperties:
@@ -33,7 +32,7 @@ jenkins:
   securityRealm:
     googleOAuth2:
       clientId: "${oauth_client_id}"
-      clientSecret: "${oauth_client_secret}"
+      clientSecret: $${jenkins/oauth_client_secret}
 security:
   queueItemAuthenticator:
     authenticators:

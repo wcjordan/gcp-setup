@@ -18,7 +18,12 @@ extraEnvVars:
 extraVolumeMounts:
   - name: casc-config-volume
     mountPath: /etc/config
+  - name: jenkins-secrets
+    mountPath: /run/secrets/jenkins
 extraVolumes:
   - name: casc-config-volume
     configMap:
       name: jenkins-casc-config
+  - name: jenkins-secrets
+    secret:
+      secretName: jenkins-secrets

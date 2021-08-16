@@ -86,11 +86,7 @@ May need to add repo.  Not sure?
 helm repo add bitnami https://charts.bitnami.com/bitnami
 ```
 
-### Credentials
-#### Create Credentials for GKE
-Follow instructions at [Google OAuth Plugin](https://plugins.jenkins.io/google-oauth-plugin/)
-
-#### Create Credentials for Jenkins OAuth
+### Create Credentials for Jenkins OAuth
 Navigate to `https://console.cloud.google.com/apis/credentials`  
 Be sure you're in the desired project  
 Press `Create Credentials => OAuth Client ID => Configure Consent Screen`  
@@ -104,15 +100,21 @@ Copy & save the Client ID & Client Secret for setting up the plugin
 For more details see [Google Login Plugin](https://github.com/jenkinsci/google-login-plugin/blob/master/README.md) & [StackOverlow](https://stackoverflow.com/a/55595582)
 
 ### Manually install Jenkins Plugins
-Explore installing w/ [Plugin Installationi Manager Tool](https://github.com/jenkinsci/plugin-installation-manager-tool)  
-Probably need to extend Docker image which Helm uses  
+Login using user `user` and password:
+```
+kubectl get secret --namespace default jenkins-ci -o jsonpath="{.data.jenkins-password}" | base64 --decode
+```
 
+Install the following plugins
 - Build Failure Analyzer
 - BrowserStack
 - Google Container Registry Auth
 - Google Login
 - Jenkins Configuration as Code Plugin
 - Kubernetes
+
+TODO Explore installing w/ [Plugin Installationi Manager Tool](https://github.com/jenkinsci/plugin-installation-manager-tool)
+Probably need to extend Docker image which Helm uses
 
 ### Add Builds
 See instructions within each repos README

@@ -41,19 +41,31 @@ resource "google_project_iam_member" "jenkins_storage_buckets_role" {
   member  = "serviceAccount:${google_service_account.jenkins.email}"
 }
 
-# Create ConfigMap for Jenkins Config as Code configuration
+resource "google_service_account_key" "jenkins" {
+  service_account_id = google_service_account.jenkins.name
+}
+
+# Create ConfigMap for Jenkins Config as Code (CasC) configuration
+# Also creates secrets for CasC ConfigMap to use
+resource "kubernetes_secret" "jenkins" {
+  metadata {
+    name = "jenkins-secrets"
+  }
+
+  data = {
+    browserstack_access_key    = var.browserstack_access_key
+    google_service_account_key = google_service_account_key.jenkins.private_key
+    oauth_client_secret        = var.oauth_client_secret
+  }
+}
+
 locals {
   casc_config = templatefile("jenkins-casc-config.yaml.tpl", {
-    project_id  = var.project_id,
-    admin_email = var.admin_email,
-    dns_name    = var.dns_name,
-
-    google_service_account_key = var.google_service_account_key,
-    browserstack_username      = var.browserstack_username,
-    browserstack_id            = var.browserstack_id,
-    browserstack_access_key    = var.browserstack_access_key,
-    oauth_client_id            = var.oauth_client_id,
-    oauth_client_secret        = var.oauth_client_secret,
+    project_id            = var.project_id,
+    admin_email           = var.admin_email,
+    dns_name              = var.dns_name,
+    browserstack_username = var.browserstack_username,
+    oauth_client_id       = var.oauth_client_id,
   })
 }
 resource "kubernetes_config_map" "jenkins-casc-config" {
