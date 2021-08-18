@@ -2,7 +2,8 @@
 ## Prerequisites
 [Install Terraform](https://learn.hashicorp.com/tutorials/terraform/install-cli?in=terraform/gcp-get-started) & [Set up GCP](https://learn.hashicorp.com/tutorials/terraform/google-cloud-platform-build?in=terraform/gcp-get-started#set-up-gcp).
 
-Use `gcloud init` to configure gcloud to use the new project.
+Use `gcloud init` to configure gcloud to use the new project.  
+Re-initialize a 2nd time after enabling services to allow setting zone & region  
 
 Enable APIs:
 ```
@@ -15,7 +16,7 @@ gcloud services enable dns.googleapis.com
 gcloud services enable identitytoolkit.googleapis.com
 ```
 
-Create a service account for Terraform
+## Create a service account for Terraform
 ```
 PROJECT_ID=<PROJECT_ID>
 SERVICE_ACCOUNT=$PROJECT_ID-terraform
@@ -45,20 +46,50 @@ gcloud iam service-accounts keys create $GIT_DIR/service_account_key.json \
   --iam-account=$SERVICE_ACCOUNT@$PROJECT_ID.iam.gserviceaccount.com
 ```
 
-Init Terraform
+## Init & Prepare Terraform
 ```
 cd $GIT_DIR/terraform
 terraform init
+touch terraform.tfvars
 ```
 
-## Create GKE Cluster
+Set the contents of terraform.tfvars with the values filled in:
+```
+project_name =
+project_id   =
+admin_email  =
+dns_name     =
+
+browserstack_username   =
+browserstack_access_key =
+
+oauth_client_id     =
+oauth_client_secret =
+```
+
+### Create Credentials for Jenkins OAuth
+Navigate to `https://console.cloud.google.com/apis/credentials`  
+Be sure you're in the desired project  
+Press `Create Credentials => OAuth Client ID => Configure Consent Screen`  
+Select `External` users.  In the future explore `Internal` if we use a workspace.  
+Fill out the consent screen form.  No scopes are needed.  
+
+Return to initial page.  Press `Create Credentials => OAuth Client ID`  
+Set type to `Web Application`  
+Set domain URI to `http://${JENKINS_ROOT_URL}`  
+Set redirect URI to `http://${JENKINS_ROOT_URL}/securityRealm/finishLogin`  
+
+Copy the Client ID & Client Secret for terraform.tfvars  
+For more details see [Google Login Plugin](https://github.com/jenkinsci/google-login-plugin/blob/master/README.md) & [StackOverlow](https://stackoverflow.com/a/55595582)
+
+## Apply Terraform to create GKE cluster and install Jenkins
 Run Terraform in the terraform directory
 ```
 cd $GIT_DIR/terraform
 terraform apply
 ```
 
-Setup gcloud & kubectl
+### Setup gcloud & kubectl for GKE cluster
 ```
 PROJECT_NAME=<PROJECT_NAME>
 gcloud container clusters get-credentials $PROJECT_NAME-gke
@@ -75,29 +106,12 @@ kubectl annotate namespace default cnrm.cloud.google.com/project-id=$PROJECT_ID
 ```
 
 ## Setup DNS
-Terraform will setup the DNS, but you may need to set an NS entry in the domain parent zone.
-See [StackOverflow](https://stackoverflow.com/questions/23356881/manage-only-a-subdomain-with-google-cloud-dns) for more details.
+Terraform will setup the DNS, but you may need to update name servers in Google Domains (see [this GCloud tutorial, step #5](https://cloud.google.com/dns/docs/tutorials/create-domain-tutorial#update-nameservers)) or set an NS entry in the domain parent zone (see [this StackOverflow answer](https://stackoverflow.com/questions/23356881/manage-only-a-subdomain-with-google-cloud-dns)).
+
+Your DNS NS data for this step can be found on [the GCloud DNS page](https://console.cloud.google.com/net-services/dns).
 
 ## Setup Jenkins
 Terraform will create a static IP, DNS entry, and install the Helm chart
-
-May need to add repo.  Not sure?
-```
-helm repo add bitnami https://charts.bitnami.com/bitnami
-```
-
-### Create Credentials for Jenkins OAuth
-Navigate to `https://console.cloud.google.com/apis/credentials`  
-Be sure you're in the desired project  
-Press `Create Credentials => OAuth Client ID => Configure Consent Screen`  
-Select `External` users.  In the future explore `Internal` if we use a workspace.  
-Fill out the consent screen form.  No scopes are needed.  
-Return to initial page.  Press `Create Credentials => OAuth Client ID`  
-Type: `Web Application`  
-Set domain URI to `http://${JENKINS_ROOT_URL}`  
-Set redirect URI to `http://${JENKINS_ROOT_URL}/securityRealm/finishLogin`  
-Copy & save the Client ID & Client Secret for setting up the plugin  
-For more details see [Google Login Plugin](https://github.com/jenkinsci/google-login-plugin/blob/master/README.md) & [StackOverlow](https://stackoverflow.com/a/55595582)
 
 ### Manually install Jenkins Plugins
 Login using user `user` and password:
@@ -110,10 +124,10 @@ Install the following plugins
 - BrowserStack
 - Google Container Registry Auth
 - Google Login
-- Jenkins Configuration as Code Plugin
+- Configuration as Code
 - Kubernetes
 
-TODO Explore installing w/ [Plugin Installationi Manager Tool](https://github.com/jenkinsci/plugin-installation-manager-tool)
+TODO Explore installing w/ [Plugin Installation Manager Tool](https://github.com/jenkinsci/plugin-installation-manager-tool)
 Probably need to extend Docker image which Helm uses
 
 ### Add Builds

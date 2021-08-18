@@ -83,6 +83,10 @@ resource "helm_release" "jenkins" {
   name  = "jenkins-ci"
   chart = "bitnami/jenkins"
 
+  # Wait for node pool to exist before installing Jenkins to avoid a timeout
+  depends_on = [google_container_node_pool.primary_nodes]
+
+
   values = [
     "${file("../charts/jenkins/values.yaml")}"
   ]
