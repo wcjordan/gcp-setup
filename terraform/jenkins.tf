@@ -59,6 +59,24 @@ resource "kubernetes_secret" "jenkins" {
   }
 }
 
+resource "kubernetes_secret" "jenkins-gke-sa" {
+  metadata {
+    name = "jenkins-gke-sa"
+    labels = {
+      "jenkins.io/credentials-type" = "secretFile"
+    }
+    annotations = {
+      "kubernetes.io/credentials-description" = "Credentials for GKE service account"
+    }
+  }
+  data = {
+    filename = "gke-sa-key.json"
+  }
+  binary_data = {
+    data = google_service_account_key.jenkins.private_key
+  }
+}
+
 locals {
   casc_config = templatefile("jenkins-casc-config.yaml.tpl", {
     project_id            = var.project_id,
