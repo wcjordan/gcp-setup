@@ -126,6 +126,7 @@ Install the following plugins
 - Google Login
 - Configuration as Code
 - Kubernetes
+- Kubernetes Credentials Provider
 
 TODO Explore installing w/ [Plugin Installation Manager Tool](https://github.com/jenkinsci/plugin-installation-manager-tool)
 Probably need to extend Docker image which Helm uses

@@ -17,6 +17,38 @@ resource "google_dns_record_set" "jenkins-recordset" {
   ttl          = 1800
 }
 
+# Give default service account access to secrets for Jenkins Kubernetes Credentials Provider plugin
+resource "kubernetes_role" "jenkins-secrets" {
+  metadata {
+    name      = "jenkins-secrets"
+    namespace = "default"
+  }
+
+  rule {
+    api_groups = [""]
+    resources  = ["secrets"]
+    # resource_names = ["jenkins-gke-sa"]
+    verbs = ["get", "list", "watch"]
+  }
+}
+
+resource "kubernetes_role_binding" "jenkins-secrets" {
+  metadata {
+    name      = "jenkins-secrets"
+    namespace = "default"
+  }
+  role_ref {
+    api_group = "rbac.authorization.k8s.io"
+    kind      = "Role"
+    name      = "jenkins-secrets"
+  }
+  subject {
+    kind      = "ServiceAccount"
+    name      = "default"
+    namespace = "default"
+  }
+}
+
 # Jenkins k8s plugin GCloud service account
 resource "google_service_account" "jenkins" {
   account_id   = "${var.project_name}-jenkins"
@@ -80,10 +112,13 @@ resource "kubernetes_secret" "jenkins-gke-sa" {
 locals {
   casc_config = templatefile("jenkins-casc-config.yaml.tpl", {
     project_id            = var.project_id,
+    project_name          = var.project_name,
     admin_email           = var.admin_email,
     dns_name              = var.dns_name,
     browserstack_username = var.browserstack_username,
     oauth_client_id       = var.oauth_client_id,
+    sentry_dsn            = var.sentry_dsn,
+    sentry_token          = var.sentry_token,
   })
 }
 resource "kubernetes_config_map" "jenkins-casc-config" {

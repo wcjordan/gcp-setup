@@ -32,3 +32,12 @@ variable "oauth_client_secret" {
   default     = ""
   description = "OAuth client secret"
 }
+
+variable "sentry_dsn" {
+  default     = ""
+  description = "Sentry DSN used by Jenkins for CI deployments"
+}
+variable "sentry_token" {
+  default     = ""
+  description = "Sentry token used by Jenkins for CI deployments"
+}

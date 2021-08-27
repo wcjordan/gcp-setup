@@ -28,6 +28,12 @@ jenkins:
       env:
       - key: "GCP_PROJECT"
         value: "${project_id}"
+      - key: "GCP_PROJECT_NAME"
+        value: "${project_name}"
+      - key: "SENTRY_DSN"
+        value: "${sentry_dsn}"
+      - key: "SENTRY_TOKEN"
+        value: "${sentry_token}"
   numExecutors: 0
   securityRealm:
     googleOAuth2:
