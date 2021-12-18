@@ -15,7 +15,7 @@ jenkins:
   authorizationStrategy:
     globalMatrix:
       permissions:
-      - "Overall/Administer:${admin_email}"
+      - "USER:Overall/Administer:${admin_email}"
   clouds:
   - kubernetes:
       containerCap: 2

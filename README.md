@@ -65,6 +65,9 @@ browserstack_access_key =
 
 oauth_client_id     =
 oauth_client_secret =
+
+sentry_dsn   =
+sentry_token =
 ```
 
 ### Create Credentials for Jenkins OAuth
