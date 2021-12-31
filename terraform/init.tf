@@ -19,7 +19,7 @@ terraform {
 }
 
 provider "google" {
-  credentials = file("../service_account_key.json")
+  credentials = file("../secrets/service_account_key.json")
 
   project = var.project_id
   region  = "us-east4"

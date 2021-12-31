@@ -73,6 +73,12 @@ resource "google_project_iam_member" "jenkins_storage_buckets_role" {
   member  = "serviceAccount:${google_service_account.jenkins.email}"
 }
 
+resource "google_project_iam_member" "jenkins_dns_admin_role" {
+  project = var.project_id
+  role    = "roles/dns.admin"
+  member  = "serviceAccount:${google_service_account.jenkins.email}"
+}
+
 resource "google_service_account_key" "jenkins" {
   service_account_id = google_service_account.jenkins.name
 }
@@ -106,6 +112,27 @@ resource "kubernetes_secret" "jenkins-gke-sa" {
   }
   binary_data = {
     data = google_service_account_key.jenkins.private_key
+  }
+}
+
+data "local_file" "chalk-oauth-web-secret" {
+    filename = "${path.root}/../secrets/chalk_oauth_web_client_secret.json"
+}
+resource "kubernetes_secret" "chalk-oauth-web-secret" {
+  metadata {
+    name = "chalk-oauth-web-secret"
+    labels = {
+      "jenkins.io/credentials-type" = "secretFile"
+    }
+    annotations = {
+      "kubernetes.io/credentials-description" = "OAuth secret for web logins used by Chalk build"
+    }
+  }
+  data = {
+    filename = "oauth_web_client_secret.json"
+  }
+  binary_data = {
+    data = data.local_file.chalk-oauth-web-secret.content_base64
   }
 }
 

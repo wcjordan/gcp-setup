@@ -1,6 +1,6 @@
 .terraform*
 terraform.tfvars
 terraform.tfstate*
-service_account_key.json
+/secrets/
 
 .DS_Store
