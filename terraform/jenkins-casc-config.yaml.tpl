@@ -30,6 +30,8 @@ jenkins:
         value: "${project_id}"
       - key: "GCP_PROJECT_NAME"
         value: "${project_name}"
+      - key: "OAUTH_REFRESH_TOKEN"
+        value: "${oauth_refresh_token}"
       - key: "SENTRY_DSN"
         value: "${sentry_dsn}"
       - key: "SENTRY_TOKEN"

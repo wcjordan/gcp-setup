@@ -144,6 +144,7 @@ locals {
     dns_name              = var.dns_name,
     browserstack_username = var.browserstack_username,
     oauth_client_id       = var.oauth_client_id,
+    oauth_refresh_token   = var.oauth_refresh_token,
     sentry_dsn            = var.sentry_dsn,
     sentry_token          = var.sentry_token,
   })

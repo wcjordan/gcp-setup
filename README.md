@@ -65,6 +65,7 @@ browserstack_access_key =
 
 oauth_client_id     =
 oauth_client_secret =
+oauth_refresh_token =
 
 sentry_dsn   =
 sentry_token =

@@ -32,6 +32,10 @@ variable "oauth_client_secret" {
   default     = ""
   description = "OAuth client secret"
 }
+variable "oauth_refresh_token" {
+  default     = ""
+  description = "OAuth refresh token for CI Selenium tests"
+}
 
 variable "sentry_dsn" {
   default     = ""
