@@ -73,12 +73,6 @@ resource "google_project_iam_member" "jenkins_storage_buckets_role" {
   member  = "serviceAccount:${google_service_account.jenkins.email}"
 }
 
-resource "google_project_iam_member" "jenkins_dns_admin_role" {
-  project = var.project_id
-  role    = "roles/dns.admin"
-  member  = "serviceAccount:${google_service_account.jenkins.email}"
-}
-
 resource "google_service_account_key" "jenkins" {
   service_account_id = google_service_account.jenkins.name
 }
