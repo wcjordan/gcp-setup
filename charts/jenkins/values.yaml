@@ -1,29 +1,13 @@
-## Ingress paramaters
-##
-ingress:
-  ## Set to true to enable ingress record generation
-  ##
-  enabled: true
-
-  ## Set this to true in order to add the corresponding annotations for cert-manager
-  ##
-  certManager: false
-
-## Configure Jenkins Config as Code
-## https://github.com/jenkinsci/configuration-as-code-plugin
-##
-extraEnvVars:
-  - name: CASC_JENKINS_CONFIG
-    value: /etc/config/jenkins-casc-config.yaml
-extraVolumeMounts:
-  - name: casc-config-volume
-    mountPath: /etc/config
-  - name: jenkins-secrets
-    mountPath: /run/secrets/jenkins
-extraVolumes:
-  - name: casc-config-volume
-    configMap:
-      name: jenkins-casc-config
-  - name: jenkins-secrets
-    secret:
-      secretName: jenkins-secrets
+controller:
+  additionalPlugins:
+    - authorize-project
+    - browserstack-integration
+    - build-failure-analyzer
+    - docker-workflow
+    - google-container-registry-auth
+    - google-login
+    - kubernetes-credentials-provider
+    - matrix-auth
+    - timestamper
+  ingress:
+    enabled: true

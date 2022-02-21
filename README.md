@@ -22,6 +22,7 @@ PROJECT_ID=<PROJECT_ID>
 SERVICE_ACCOUNT=$PROJECT_ID-terraform
 gcloud iam service-accounts create $SERVICE_ACCOUNT
 
+# For reference https://cloud.google.com/iam/docs/permissions-reference
 gcloud projects add-iam-policy-binding $PROJECT_ID \
   --member "serviceAccount:$SERVICE_ACCOUNT@$PROJECT_ID.iam.gserviceaccount.com" \
   --role roles/editor
@@ -86,6 +87,12 @@ Set redirect URI to `http://${JENKINS_ROOT_URL}/securityRealm/finishLogin`
 Copy the Client ID & Client Secret for terraform.tfvars  
 For more details see [Google Login Plugin](https://github.com/jenkinsci/google-login-plugin/blob/master/README.md) & [StackOverlow](https://stackoverflow.com/a/55595582)
 
+### Add Helm repo
+```
+helm repo add jenkinsci https://charts.jenkins.io
+helm repo update
+```
+
 ### Add Secrets
 See instructions within each repos README
 
@@ -119,24 +126,6 @@ Your DNS NS data for this step can be found on [the GCloud DNS page](https://con
 
 ## Setup Jenkins
 Terraform will create a static IP, DNS entry, and install the Helm chart
-
-### Manually install Jenkins Plugins
-Login using user `user` and password:
-```
-kubectl get secret --namespace default jenkins-ci -o jsonpath="{.data.jenkins-password}" | base64 --decode
-```
-
-Install the following plugins
-- Build Failure Analyzer
-- BrowserStack
-- Google Container Registry Auth
-- Google Login
-- Configuration as Code
-- Kubernetes
-- Kubernetes Credentials Provider
-
-TODO Explore installing w/ [Plugin Installation Manager Tool](https://github.com/jenkinsci/plugin-installation-manager-tool)
-Probably need to extend Docker image which Helm uses
 
 ### Add Builds
 See instructions within each repos README

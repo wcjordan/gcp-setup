@@ -44,7 +44,7 @@ resource "kubernetes_role_binding" "jenkins-secrets" {
   }
   subject {
     kind      = "ServiceAccount"
-    name      = "default"
+    name      = "jenkins"
     namespace = "default"
   }
 }
@@ -75,20 +75,6 @@ resource "google_project_iam_member" "jenkins_storage_buckets_role" {
 
 resource "google_service_account_key" "jenkins" {
   service_account_id = google_service_account.jenkins.name
-}
-
-# Create ConfigMap for Jenkins Config as Code (CasC) configuration
-# Also creates secrets for CasC ConfigMap to use
-resource "kubernetes_secret" "jenkins" {
-  metadata {
-    name = "jenkins-secrets"
-  }
-
-  data = {
-    browserstack_access_key    = var.browserstack_access_key
-    google_service_account_key = google_service_account_key.jenkins.private_key
-    oauth_client_secret        = var.oauth_client_secret
-  }
 }
 
 resource "kubernetes_secret" "jenkins-gke-sa" {
@@ -130,51 +116,93 @@ resource "kubernetes_secret" "chalk-oauth-web-secret" {
   }
 }
 
-locals {
-  casc_config = templatefile("jenkins-casc-config.yaml.tpl", {
-    project_id            = var.project_id,
-    project_name          = var.project_name,
-    admin_email           = var.admin_email,
-    dns_name              = var.dns_name,
-    browserstack_username = var.browserstack_username,
-    oauth_client_id       = var.oauth_client_id,
-    oauth_refresh_token   = var.oauth_refresh_token,
-    sentry_dsn            = var.sentry_dsn,
-    sentry_token          = var.sentry_token,
-  })
-}
-resource "kubernetes_config_map" "jenkins-casc-config" {
-  metadata {
-    name = "jenkins-casc-config"
-  }
-
-  data = {
-    "jenkins-casc-config.yaml" : "${local.casc_config}"
-  }
-}
-
 # Jenkins Helm install
 resource "helm_release" "jenkins" {
-  name  = "jenkins-ci"
-  chart = "bitnami/jenkins"
+  name  = "jenkins"
+  chart = "jenkinsci/jenkins"
 
   # Wait for node pool to exist before installing Jenkins to avoid a timeout
   depends_on = [google_container_node_pool.primary_nodes]
 
-
+## Configure Jenkins Config as Code
+## https://github.com/jenkinsci/configuration-as-code-plugin
   values = [
-    "${file("../charts/jenkins/values.yaml")}"
+    "${file("../charts/jenkins/values.yaml")}",
+        <<EOT
+controller:
+  additionalSecrets:
+  - name: browserstack_access_key
+    value: "${var.browserstack_access_key}"
+  - name: google_service_account_key
+    value: "${google_service_account_key.jenkins.private_key}"
+  - name: oauth_client_secret
+    value: "${var.oauth_client_secret}"
+  ingress:
+    annotations:
+      kubernetes.io/ingress.global-static-ip-name: "${var.project_name}-jenkins-ip"
+    hostname: "jenkins.${var.dns_name}"
+  jenkinsAdminEmail: "${var.admin_email}"
+  jenkinsUrl: "http://jenkins.${var.dns_name}/"
+  JCasC:
+    defaultConfig: false
+    authorizationStrategy: |-
+      globalMatrix:
+        permissions:
+        - "USER:Overall/Administer:${var.admin_email}"
+    securityRealm: |-
+      googleOAuth2:
+        clientId: "${var.oauth_client_id}"
+        clientSecret: $${oauth_client_secret}
+    configScripts:
+      jenkins-casc-configs: |
+        credentials:
+          system:
+            domainCredentials:
+            - credentials:
+              - googleRobotPrivateKey:
+                  projectId: "gke_key"
+                  serviceAccountConfig:
+                    json:
+                      secretJsonKey: $${google_service_account_key}
+              - browserStack:
+                  id: "browserstack_key"
+                  username: "${var.browserstack_username}"
+                  accesskey: $${browserstack_access_key}
+        jenkins:
+          clouds:
+          - kubernetes:
+              containerCap: 2
+              containerCapStr: "2"
+              credentialsId: "gke_key"
+              jenkinsTunnel: "jenkins-agent.default.svc.cluster.local:50000"
+              name: "kubernetes"
+          globalNodeProperties:
+          - envVars:
+              env:
+              - key: "GCP_PROJECT"
+                value: "${var.project_id}"
+              - key: "GCP_PROJECT_NAME"
+                value: "${var.project_name}"
+              - key: "OAUTH_REFRESH_TOKEN"
+                value: "${var.oauth_refresh_token}"
+              - key: "SENTRY_DSN"
+                value: "${var.sentry_dsn}"
+              - key: "SENTRY_TOKEN"
+                value: "${var.sentry_token}"
+          numExecutors: 0
+        security:
+          queueItemAuthenticator:
+            authenticators:
+            - global:
+                strategy:
+                  specificUsersAuthorizationStrategy:
+                    userid: "${var.admin_email}"
+        unclassified:
+          defaultFolderConfiguration:
+            healthMetrics:
+            - "primaryBranchHealthMetric"
+          timestamper:
+            allPipelines: true
+EOT
   ]
-  set {
-    name  = "ingress.annotations.kubernetes\\.io/ingress\\.global-static-ip-name"
-    value = "${var.project_name}-jenkins-ip"
-  }
-  set {
-    name  = "ingress.extraHosts[0].name"
-    value = "jenkins.${var.dns_name}"
-  }
-  set {
-    name  = "ingress.extraHosts[0].path"
-    value = "/*"
-  }
 }
