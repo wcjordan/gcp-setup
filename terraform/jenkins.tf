@@ -73,6 +73,12 @@ resource "google_project_iam_member" "jenkins_storage_buckets_role" {
   member  = "serviceAccount:${google_service_account.jenkins.email}"
 }
 
+resource "google_project_iam_member" "jenkins_sql_addmin_role" {
+  project = var.project_id
+  role    = "roles/cloudsql.admin"
+  member  = "serviceAccount:${google_service_account.jenkins.email}"
+}
+
 resource "google_service_account_key" "jenkins" {
   service_account_id = google_service_account.jenkins.name
 }
