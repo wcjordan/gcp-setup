@@ -177,8 +177,8 @@ controller:
         jenkins:
           clouds:
           - kubernetes:
-              containerCap: 2
-              containerCapStr: "2"
+              containerCap: 4
+              containerCapStr: "4"
               credentialsId: "gke_key"
               jenkinsTunnel: "jenkins-agent.default.svc.cluster.local:50000"
               name: "kubernetes"

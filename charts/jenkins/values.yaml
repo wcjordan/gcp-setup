@@ -1,6 +1,7 @@
 controller:
   additionalPlugins:
     - authorize-project
+    - blueocean
     - browserstack-integration
     - build-failure-analyzer
     - docker-workflow
