@@ -1,4 +1,11 @@
 terraform {
+  cloud {
+    organization = "flipperkid"
+    workspaces {
+      name = "gcp-setup"
+    }
+  }
+
   required_providers {
     google = {
       # Using beta for config_connector_config
@@ -19,7 +26,7 @@ terraform {
 }
 
 provider "google" {
-  credentials = file("../secrets/service_account_key.json")
+  credentials = var.gcp_service_account_key
 
   project = var.project_id
   region  = "us-east4"

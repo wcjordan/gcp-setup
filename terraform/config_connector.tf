@@ -40,7 +40,7 @@ resource "google_service_account_iam_policy" "cnrm" {
 # CNRM Config Connector install
 resource "helm_release" "cnrm" {
   name  = "gcp-config-connector"
-  chart = "../charts/cnrm"
+  chart = "charts/cnrm"
 
   set {
     name  = "serviceAccount"

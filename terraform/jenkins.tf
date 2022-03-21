@@ -101,9 +101,6 @@ resource "kubernetes_secret" "jenkins-gke-sa" {
   }
 }
 
-data "local_file" "chalk-oauth-web-secret" {
-    filename = "${path.root}/../secrets/chalk_oauth_web_client_secret.json"
-}
 resource "kubernetes_secret" "chalk-oauth-web-secret" {
   metadata {
     name = "chalk-oauth-web-secret"
@@ -118,7 +115,7 @@ resource "kubernetes_secret" "chalk-oauth-web-secret" {
     filename = "oauth_web_client_secret.json"
   }
   binary_data = {
-    data = data.local_file.chalk-oauth-web-secret.content_base64
+    data = base64encode(var.chalk_oauth_client_secret)
   }
 }
 
@@ -133,7 +130,7 @@ resource "helm_release" "jenkins" {
 ## Configure Jenkins Config as Code
 ## https://github.com/jenkinsci/configuration-as-code-plugin
   values = [
-    "${file("../charts/jenkins/values.yaml")}",
+    "${file("charts/jenkins/values.yaml")}",
         <<EOT
 controller:
   additionalSecrets:

@@ -15,6 +15,12 @@ variable "dns_name" {
   description = "DNS name to use"
 }
 
+variable "gcp_service_account_key" {
+  default     = ""
+  description = "The contents of a GCP service account key file in JSON format"
+  type        = string
+}
+
 variable "browserstack_username" {
   default     = ""
   description = "BrowserStack username"
@@ -44,4 +50,10 @@ variable "sentry_dsn" {
 variable "sentry_token" {
   default     = ""
   description = "Sentry token used by Jenkins for CI deployments"
+}
+
+variable "chalk_oauth_client_secret" {
+  default     = ""
+  description = "The contents of an OAuth client secret in JSON format"
+  type        = string
 }
