@@ -62,6 +62,12 @@ resource "google_container_node_pool" "primary_nodes" {
       enable_secure_boot = true
     }
 
+    # Works around an issue where Terraform tries to update the node pool when nothing's changed
+    kubelet_config {
+      cpu_manager_policy = "none"
+      cpu_cfs_quota      = null
+    }
+
     service_account = google_service_account.gke.email
     oauth_scopes = [
       "https://www.googleapis.com/auth/cloud-platform",
