@@ -8,6 +8,7 @@ terraform {
 
   required_providers {
     google = {
+      # Using beta for config_connector_config
       source  = "hashicorp/google-beta"
       version = "4.15.0"
     }
