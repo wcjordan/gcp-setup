@@ -19,7 +19,7 @@ resource "google_container_cluster" "primary" {
     channel = "RAPID"
   }
   workload_identity_config {
-    identity_namespace = "${var.project_id}.svc.id.goog"
+    workload_pool = "${var.project_id}.svc.id.goog"
   }
   addons_config {
     config_connector_config {
@@ -55,17 +55,8 @@ resource "google_container_node_pool" "primary_nodes" {
     labels = {
       env = var.project_name
     }
-    workload_metadata_config {
-      node_metadata = "GKE_METADATA_SERVER"
-    }
     shielded_instance_config {
       enable_secure_boot = true
-    }
-
-    # Works around an issue where Terraform tries to update the node pool when nothing's changed
-    kubelet_config {
-      cpu_manager_policy = "none"
-      cpu_cfs_quota      = null
     }
 
     service_account = google_service_account.gke.email
