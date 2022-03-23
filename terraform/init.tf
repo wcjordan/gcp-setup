@@ -8,21 +8,20 @@ terraform {
 
   required_providers {
     google = {
-      # Using beta for config_connector_config
-      source  = "hashicorp/google-beta"
-      version = "3.74.0"
+      source  = "hashicorp/google"
+      version = "4.15.0"
     }
     helm = {
       source  = "hashicorp/helm"
-      version = "2.2.0"
+      version = "2.4.1"
     }
     kubernetes = {
       source  = "hashicorp/kubernetes"
-      version = "2.3.2"
+      version = "2.9.0"
     }
   }
 
-  required_version = ">= 1.0.1"
+  required_version = ">= 1.1.7"
 }
 
 provider "google" {
