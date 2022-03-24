@@ -46,26 +46,22 @@ resource "google_container_node_pool" "primary_nodes" {
   }
 
   node_config {
-    preemptible  = true
     machine_type = "e2-standard-4"
-    tags         = ["gke-node", "${var.project_name}-gke"]
+    spot         = true
+
+    tags     = ["gke-node", "${var.project_name}-gke"]
     metadata = {
       disable-legacy-endpoints = "true"
     }
-    labels = {
+    labels   = {
       env = var.project_name
     }
+
     workload_metadata_config {
       mode = "GKE_METADATA"
     }
     shielded_instance_config {
       enable_secure_boot = true
-    }
-
-    # Works around an issue where Terraform tries to update the node pool when nothing's changed
-    kubelet_config {
-      cpu_manager_policy = "none"
-      cpu_cfs_quota      = null
     }
 
     service_account = google_service_account.gke.email
