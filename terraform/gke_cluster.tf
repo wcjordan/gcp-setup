@@ -47,18 +47,16 @@ resource "google_container_node_pool" "primary_nodes" {
 
   node_config {
     machine_type = "e2-standard-4"
-    tags         = ["gke-node", "${var.project_name}-gke"]
+    spot         = true
+
+    tags     = ["gke-node", "${var.project_name}-gke"]
     metadata = {
       disable-legacy-endpoints = "true"
     }
-    labels = {
+    labels   = {
       env = var.project_name
     }
-    scheduling {
-      provisioning_model = "SPOT"
-      preemptible        = true
-      auto_restart       = false
-    }
+
     workload_metadata_config {
       mode = "GKE_METADATA"
     }
