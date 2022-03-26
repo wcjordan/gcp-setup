@@ -1,3 +1,6 @@
+agent:
+  namespace: jenkins-worker
+
 controller:
   additionalPlugins:
     - authorize-project
