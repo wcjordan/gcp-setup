@@ -139,8 +139,9 @@ resource "kubernetes_secret" "github-ssh-key-secret" {
 
 # Jenkins Helm install
 resource "helm_release" "jenkins" {
-  name  = "jenkins"
-  chart = "jenkinsci/jenkins"
+  name       = "jenkins"
+  chart      = "jenkins"
+  repository = "https://charts.jenkins.io"
 
   # Wait for node pool to exist before installing Jenkins to avoid a timeout
   depends_on = [google_container_node_pool.primary_nodes]

@@ -40,21 +40,16 @@ gcloud projects add-iam-policy-binding $PROJECT_ID \
   --role roles/container.admin
 ```
 
-Download service account key and place in directory
+Download service account key so you can set it as a variable in Terraform Cloud
 ```
-GIT_DIR=<GIT_ROOT>/gcp-setup
-gcloud iam service-accounts keys create $GIT_DIR/secrets/service_account_key.json \
+gcloud iam service-accounts keys create <SECURE WORKSPACE>/service_account_key.json \
   --iam-account=$SERVICE_ACCOUNT@$PROJECT_ID.iam.gserviceaccount.com
 ```
 
 ## Init & Prepare Terraform
-```
-cd $GIT_DIR/terraform
-terraform init
-touch terraform.tfvars
-```
+Set up a Workspace in Terraform Cloud
 
-Set the contents of terraform.tfvars with the values filled in:
+Set variables for the following fields in Terraform Cloud
 ```
 project_name =
 project_id   =
@@ -84,24 +79,14 @@ Set type to `Web Application`
 Set domain URI to `http://${JENKINS_ROOT_URL}`  
 Set redirect URI to `http://${JENKINS_ROOT_URL}/securityRealm/finishLogin`  
 
-Copy the Client ID & Client Secret for terraform.tfvars  
+Set the Client ID & Client Secret variables in Terraform Cloud  
 For more details see [Google Login Plugin](https://github.com/jenkinsci/google-login-plugin/blob/master/README.md) & [StackOverlow](https://stackoverflow.com/a/55595582)
-
-### Add Helm repo
-```
-helm repo add jenkinsci https://charts.jenkins.io
-helm repo update
-```
 
 ### Add Secrets
 See instructions within each repos README
 
 ## Apply Terraform to create GKE cluster and install Jenkins
-Run Terraform in the terraform directory
-```
-cd $GIT_DIR/terraform
-terraform apply
-```
+Run Terraform from Terraform Cloud
 
 ### Setup gcloud & kubectl for GKE cluster
 ```
