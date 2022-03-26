@@ -137,6 +137,12 @@ resource "kubernetes_secret" "github-ssh-key-secret" {
   }
 }
 
+resource "kubernetes_namespace" "jenkins-worker" {
+  metadata {
+    name = "jenkins-worker"
+  }
+}
+
 # Jenkins Helm install
 resource "helm_release" "jenkins" {
   name       = "jenkins"
