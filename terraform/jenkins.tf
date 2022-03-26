@@ -136,6 +136,8 @@ controller:
   additionalSecrets:
   - name: browserstack_access_key
     value: "${var.browserstack_access_key}"
+  - name: github_ssh_key
+    value: "${var.github_ssh_key}"
   - name: google_service_account_key
     value: "${google_service_account_key.jenkins.private_key}"
   - name: oauth_client_secret
@@ -171,6 +173,13 @@ controller:
                   id: "browserstack_key"
                   username: "${var.browserstack_username}"
                   accesskey: $${browserstack_access_key}
+              - basicSSHUserPrivateKey:
+                  id: "github_ssh"
+                  privateKeySource:
+                    directEntry:
+                      privateKey: $${github_ssh_key}
+                  scope: GLOBAL
+                  username: "github_ssh"
         jenkins:
           clouds:
           - kubernetes:
