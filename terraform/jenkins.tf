@@ -189,7 +189,7 @@ controller:
                   username: "${var.browserstack_username}"
                   accesskey: $${browserstack_access_key}
         jenkins:
-          authorizationStrategy:
+          authorizationStrategy: |-
             globalMatrix:
               permissions:
               - "USER:Overall/Administer:${var.admin_email}"
@@ -214,7 +214,6 @@ controller:
               - key: "SENTRY_TOKEN"
                 value: "${var.sentry_token}"
           numExecutors: 0
-              authorizationStrategy: |-
           securityRealm: |-
             googleOAuth2:
               clientId: "${var.oauth_client_id}"
