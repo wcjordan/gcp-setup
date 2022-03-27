@@ -13,6 +13,10 @@ controller:
     - kubernetes-credentials-provider
     - matrix-auth
     - timestamper
-  installLatestSpecifiedPlugins: true
+  installPlugins:
+    - kubernetes
+    - workflow-aggregator
+    - git
+    - configuration-as-code
   ingress:
-    enabled: true
+      enabled: true
