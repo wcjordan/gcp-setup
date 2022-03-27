@@ -1,9 +1,10 @@
 # gcp-setup
 ## Prerequisites
-[Install Terraform](https://learn.hashicorp.com/tutorials/terraform/install-cli?in=terraform/gcp-get-started) & [Set up GCP](https://learn.hashicorp.com/tutorials/terraform/google-cloud-platform-build?in=terraform/gcp-get-started#set-up-gcp).
+[Install Terraform](https://learn.hashicorp.com/tutorials/terraform/install-cli?in=terraform/gcp-get-started).
 
+[Create a GCP project](https://console.cloud.google.com/projectcreate)
 Use `gcloud init` to configure gcloud to use the new project.  
-Re-initialize a 2nd time after enabling services to allow setting zone & region  
+Re-initialize a 2nd time after enabling services (see below) to allow setting zone & region  
 
 Enable APIs:
 ```
@@ -40,32 +41,33 @@ gcloud projects add-iam-policy-binding $PROJECT_ID \
   --role roles/container.admin
 ```
 
-Download service account key so you can set it as a variable in Terraform Cloud
+Download service account key so you can set it as a variable in Terraform Cloud (see below)
 ```
 gcloud iam service-accounts keys create <SECURE WORKSPACE>/service_account_key.json \
   --iam-account=$SERVICE_ACCOUNT@$PROJECT_ID.iam.gserviceaccount.com
 ```
 
-## Init & Prepare Terraform
+## Init & Set Variables for Terraform
 Set up a Workspace in Terraform Cloud
 
 Set variables for the following fields in Terraform Cloud
-```
-project_name =
-project_id   =
-admin_email  =
-dns_name     =
+See variables.tf for field descriptions
 
-browserstack_username   =
-browserstack_access_key =
+project_name & project_id - your GCP project details
+admin_email - Your email address
+dns_name - Your domain e.g. mysite.com
 
-oauth_client_id     =
-oauth_client_secret =
-oauth_refresh_token =
+browserstack_username & browserstack_access_key - See username & access key under [Automate section of settings](https://www.browserstack.com/accounts/settings)
 
-sentry_dsn   =
-sentry_token =
-```
+oauth_client_id & oauth_client_secret - See Credentials for Jenkins OAuth below
+
+sentry_dsn - A Sentry.io DSN.  https://sentry.io/settings/<ORG_ID>/projects/<PROJECT_ID>/keys/
+sentry_token - A [Sentry.io auth token](https://sentry.io/settings/account/api/auth-tokens/)
+
+gcp_service_account_key - See Create a service account for Terraform section above
+github_ssh_key - Create an SSH key to connect to Github.  See [Adding an SSH key to Github](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account).
+chalk_oauth_client_secret - See the [OAuth Setup section of Chalk README.md](https://github.com/wcjordan/chalk/blob/main/README.md)
+oauth_refresh_token
 
 ### Create Credentials for Jenkins OAuth
 Navigate to `https://console.cloud.google.com/apis/credentials`  
@@ -76,8 +78,8 @@ Fill out the consent screen form.  No scopes are needed.
 
 Return to initial page.  Press `Create Credentials => OAuth Client ID`  
 Set type to `Web Application`  
-Set domain URI to `http://${JENKINS_ROOT_URL}`  
-Set redirect URI to `http://${JENKINS_ROOT_URL}/securityRealm/finishLogin`  
+Set domain URI to `http://jenkins.${dns_name}`  
+Set redirect URI to `http://jenkins.${dns_name}/securityRealm/finishLogin`  
 
 Set the Client ID & Client Secret variables in Terraform Cloud  
 For more details see [Google Login Plugin](https://github.com/jenkinsci/google-login-plugin/blob/master/README.md) & [StackOverlow](https://stackoverflow.com/a/55595582)

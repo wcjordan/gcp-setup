@@ -1,11 +1,4 @@
 terraform {
-  cloud {
-    organization = "flipperkid"
-    workspaces {
-      name = "gcp-setup"
-    }
-  }
-
   required_providers {
     google = {
       # Using beta for config_connector_config
