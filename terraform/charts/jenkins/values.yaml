@@ -13,6 +13,6 @@ controller:
     - kubernetes-credentials-provider
     - matrix-auth
     - timestamper
-installLatestSpecifiedPlugins: true
-ingress:
+  installLatestSpecifiedPlugins: true
+  ingress:
     enabled: true
