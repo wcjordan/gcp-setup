@@ -27,6 +27,12 @@ resource "google_container_cluster" "primary" {
     }
   }
 
+  # Enables VPC native cluster routing
+  ip_allocation_policy {
+    cluster_ipv4_cidr_block  = "/14"
+    services_ipv4_cidr_block = "/20"
+  }
+
   # We can't create a cluster with no node pool defined, but we want to only use
   # separately managed node pools. So we create the smallest possible default
   # node pool and immediately delete it.
