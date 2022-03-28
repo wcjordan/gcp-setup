@@ -156,7 +156,7 @@ resource "helm_release" "jenkins" {
 ## https://github.com/jenkinsci/configuration-as-code-plugin
   values = [
     "${file("charts/jenkins/values.yaml")}",
-        <<EOT
+        <<YAML
 controller:
   additionalSecrets:
   - name: browserstack_access_key
@@ -232,6 +232,6 @@ controller:
             url: "http://jenkins.${var.dns_name}/"
           timestamper:
             allPipelines: true
-EOT
+YAML
   ]
 }
