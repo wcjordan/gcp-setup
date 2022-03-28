@@ -169,8 +169,6 @@ controller:
     annotations:
       kubernetes.io/ingress.global-static-ip-name: "${var.project_name}-jenkins-ip"
     hostname: "jenkins.${var.dns_name}"
-  jenkinsAdminEmail: "${var.admin_email}"
-  jenkinsUrl: "http://jenkins.${var.dns_name}/"
   JCasC:
     defaultConfig: false
     configScripts:
@@ -229,6 +227,9 @@ controller:
           defaultFolderConfiguration:
             healthMetrics:
             - "primaryBranchHealthMetric"
+          location:
+            adminAddress: "${var.admin_email}"
+            url: "http://jenkins.${var.dns_name}/"
           timestamper:
             allPipelines: true
 EOT
