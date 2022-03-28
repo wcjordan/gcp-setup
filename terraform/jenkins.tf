@@ -210,10 +210,6 @@ controller:
               - key: "SENTRY_TOKEN"
                 value: "${var.sentry_token}"
           numExecutors: 0
-          securityRealm: |-
-            googleOAuth2:
-              clientId: "${var.oauth_client_id}"
-              clientSecret: $${oauth_client_secret}
         security:
           queueItemAuthenticator:
             authenticators:
