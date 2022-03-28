@@ -42,6 +42,9 @@ resource "helm_release" "cnrm" {
   name  = "gcp-config-connector"
   chart = "charts/cnrm"
 
+  replace      = true
+  force_update = true
+
   set {
     name  = "serviceAccount"
     value = google_service_account.cnrm.email
