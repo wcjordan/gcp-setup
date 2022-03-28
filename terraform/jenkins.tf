@@ -189,10 +189,6 @@ controller:
                   username: "${var.browserstack_username}"
                   accesskey: $${browserstack_access_key}
         jenkins:
-          authorizationStrategy: |-
-            globalMatrix:
-              permissions:
-              - "USER:Overall/Administer:${var.admin_email}"
           clouds:
           - kubernetes:
               containerCap: 4
