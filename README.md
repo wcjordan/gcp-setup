@@ -67,7 +67,7 @@ sentry_token - A [Sentry.io auth token](https://sentry.io/settings/account/api/a
 gcp_service_account_key - See Create a service account for Terraform section above
 github_ssh_key - Create an SSH key to connect to Github.  See [Adding an SSH key to Github](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account).
 chalk_oauth_client_secret - See the [OAuth Setup section of Chalk README.md](https://github.com/wcjordan/chalk/blob/main/README.md)
-oauth_refresh_token
+oauth_refresh_token - TODO
 
 ### Create Credentials for Jenkins OAuth
 Navigate to `https://console.cloud.google.com/apis/credentials`  
