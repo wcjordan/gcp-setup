@@ -189,6 +189,10 @@ controller:
                   username: "${var.browserstack_username}"
                   accesskey: $${browserstack_access_key}
         jenkins:
+          authorizationStrategy:
+            globalMatrix:
+              permissions:
+              - "USER:Overall/Administer:${var.admin_email}"
           clouds:
           - kubernetes:
               containerCap: 4
@@ -210,6 +214,10 @@ controller:
               - key: "SENTRY_TOKEN"
                 value: "${var.sentry_token}"
           numExecutors: 0
+          securityRealm:
+            googleOAuth2:
+              clientId: "${var.oauth_client_id}"
+              clientSecret: $${oauth_client_secret}
         security:
           queueItemAuthenticator:
             authenticators:
