@@ -47,9 +47,7 @@ gcloud iam service-accounts keys create <SECURE WORKSPACE>/service_account_key.j
   --iam-account=$SERVICE_ACCOUNT@$PROJECT_ID.iam.gserviceaccount.com
 ```
 
-## Init & Set Variables for Terraform
-Set up a Workspace in Terraform Cloud
-
+## Set up a Workspace in Terraform Cloud
 Set variables for the following fields in Terraform Cloud
 See variables.tf for field descriptions
 
