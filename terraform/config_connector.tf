@@ -38,12 +38,16 @@ resource "google_service_account_iam_policy" "cnrm" {
 }
 
 # CNRM Config Connector install
-resource "helm_release" "cnrm" {
-  name  = "gcp-config-connector"
-  chart = "charts/cnrm"
-
-  set {
-    name  = "serviceAccount"
-    value = google_service_account.cnrm.email
-  }
+resource "kubectl_manifest" "cnrm" {
+    yaml_body = <<YAML
+apiVersion: core.cnrm.cloud.google.com/v1beta1
+kind: ConfigConnector
+metadata:
+  # the name is restricted to ensure that there is only one
+  # ConfigConnector resource installed in your cluster
+  name: configconnector.core.cnrm.cloud.google.com
+spec:
+ mode: cluster
+ googleServiceAccount: "${google_service_account.cnrm.email}"
+YAML
 }

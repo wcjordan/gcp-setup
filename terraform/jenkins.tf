@@ -156,7 +156,7 @@ resource "helm_release" "jenkins" {
 ## https://github.com/jenkinsci/configuration-as-code-plugin
   values = [
     "${file("charts/jenkins/values.yaml")}",
-        <<EOT
+        <<YAML
 controller:
   additionalSecrets:
   - name: browserstack_access_key
@@ -169,18 +169,8 @@ controller:
     annotations:
       kubernetes.io/ingress.global-static-ip-name: "${var.project_name}-jenkins-ip"
     hostname: "jenkins.${var.dns_name}"
-  jenkinsAdminEmail: "${var.admin_email}"
-  jenkinsUrl: "http://jenkins.${var.dns_name}/"
   JCasC:
     defaultConfig: false
-    authorizationStrategy: |-
-      globalMatrix:
-        permissions:
-        - "USER:Overall/Administer:${var.admin_email}"
-    securityRealm: |-
-      googleOAuth2:
-        clientId: "${var.oauth_client_id}"
-        clientSecret: $${oauth_client_secret}
     configScripts:
       jenkins-casc-configs: |
         credentials:
@@ -197,6 +187,10 @@ controller:
                   username: "${var.browserstack_username}"
                   accesskey: $${browserstack_access_key}
         jenkins:
+          authorizationStrategy:
+            globalMatrix:
+              permissions:
+              - "USER:Overall/Administer:${var.admin_email}"
           clouds:
           - kubernetes:
               containerCap: 4
@@ -218,6 +212,10 @@ controller:
               - key: "SENTRY_TOKEN"
                 value: "${var.sentry_token}"
           numExecutors: 0
+          securityRealm:
+            googleOAuth2:
+              clientId: "${var.oauth_client_id}"
+              clientSecret: $${oauth_client_secret}
         security:
           queueItemAuthenticator:
             authenticators:
@@ -229,8 +227,11 @@ controller:
           defaultFolderConfiguration:
             healthMetrics:
             - "primaryBranchHealthMetric"
+          location:
+            adminAddress: "${var.admin_email}"
+            url: "http://jenkins.${var.dns_name}/"
           timestamper:
             allPipelines: true
-EOT
+YAML
   ]
 }
