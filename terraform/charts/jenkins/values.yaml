@@ -19,4 +19,4 @@ controller:
     - git
     - configuration-as-code
   ingress:
-      enabled: true
+    enabled: true
