@@ -63,7 +63,7 @@ sentry_dsn - A Sentry.io DSN.  https://sentry.io/settings/<ORG_ID>/projects/<PRO
 sentry_token - A [Sentry.io auth token](https://sentry.io/settings/account/api/auth-tokens/)
 
 gcp_service_account_key - See Create a service account for Terraform section above
-chalk_oauth_client_secret & oauth_refresh_token - See the [OAuth Setup section of Chalk README.md](https://github.com/wcjordan/chalk/blob/main/README.md)
+chalk_oauth_client_secret & chalk_oauth_refresh_token - See the [OAuth Setup section of Chalk README.md](https://github.com/wcjordan/chalk/blob/main/README.md)
 
 ### Create Credentials for Jenkins OAuth
 Navigate to `https://console.cloud.google.com/apis/credentials`  
