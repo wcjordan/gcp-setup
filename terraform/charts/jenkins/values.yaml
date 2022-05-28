@@ -10,7 +10,6 @@ controller:
     - docker-workflow
     - google-container-registry-auth
     - google-login
-    - jaxb
     - kubernetes-credentials-provider
     - matrix-auth
     - timestamper
