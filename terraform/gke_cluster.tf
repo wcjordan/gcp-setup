@@ -70,7 +70,7 @@ resource "google_container_node_pool" "primary_nodes" {
 resource "helm_release" "ingress-nginx" {
   name       = "ingress-nginx"
   chart      = "ingress-nginx"
-  repository = "https://kubernetes.github.io"
+  repository = "https://kubernetes.github.io/ingress-nginx/"
   version    = "4.2.5"
 
   # Wait for node pool to exist before installing nginx controller to avoid a timeout
