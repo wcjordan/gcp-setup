@@ -1,15 +1,3 @@
-# GKE service account
-resource "google_service_account" "gke" {
-  account_id   = "${var.project_name}-gke"
-  display_name = "${var.project_name} GKE node service account"
-}
-
-resource "google_project_iam_member" "gke_gcr" {
-  project = var.project_id
-  role    = "roles/storage.objectViewer"
-  member  = "serviceAccount:${google_service_account.gke.email}"
-}
-
 # GKE cluster
 resource "google_container_cluster" "primary" {
   name = "${var.project_name}-gke"
@@ -70,9 +58,11 @@ resource "google_container_node_pool" "primary_nodes" {
       enable_secure_boot = true
     }
 
-    service_account = google_service_account.gke.email
     oauth_scopes = [
-      "https://www.googleapis.com/auth/cloud-platform",
+      "https://www.googleapis.com/auth/cloud-platform.read_only",
+      "https://www.googleapis.com/auth/devstorage.read_only",
+      "https://www.googleapis.com/auth/logging.write",
+      "https://www.googleapis.com/auth/monitoring",
     ]
   }
 }
