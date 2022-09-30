@@ -183,6 +183,10 @@ controller:
                   serviceAccountConfig:
                     json:
                       secretJsonKey: $${google_service_account_key}
+              - browserStack:
+                  id: "browserstack_key"
+                  username: "${var.browserstack_username}"
+                  accesskey: $${browserstack_access_key}
         jenkins:
           authorizationStrategy:
             globalMatrix:
