@@ -40,8 +40,10 @@ resource "google_container_node_pool" "primary_nodes" {
   }
 
   node_config {
-    machine_type = "e2-standard-4"
+    machine_type = "e2-standard-2"
     spot         = true
+    disk_size_gb = 10
+    disk_type    = "pd-standard"
 
     tags     = ["gke-node", "${var.project_name}-gke"]
     metadata = {
