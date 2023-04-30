@@ -15,6 +15,7 @@ gcloud services enable container.googleapis.com
 gcloud services enable sqladmin.googleapis.com
 gcloud services enable dns.googleapis.com
 gcloud services enable identitytoolkit.googleapis.com
+gcloud services enable artifactregistry.googleapis.com
 ```
 
 ## Create a service account for Terraform
