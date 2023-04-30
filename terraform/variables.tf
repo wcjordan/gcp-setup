@@ -6,6 +6,14 @@ variable "project_name" {
   default     = ""
   description = "Name of GCP project to install to"
 }
+variable "gcp_region" {
+  default     = ""
+  description = "Name of GCP region to use whenever relevant"
+}
+variable "gcp_zone" {
+  default     = ""
+  description = "Name of GCP zone to use whenever relevant"
+}
 variable "admin_email" {
   default     = ""
   description = "Email address of admin user.  Used for setting up Jenkins & giving admin permissions to OAuth account"

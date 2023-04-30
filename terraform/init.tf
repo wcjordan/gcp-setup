@@ -3,7 +3,7 @@ terraform {
     google = {
       # Using beta for config_connector_config
       source  = "hashicorp/google-beta"
-      version = "4.63.1"
+      version = "4.15.0"
     }
     helm = {
       source  = "hashicorp/helm"
@@ -26,8 +26,8 @@ provider "google" {
   credentials = var.gcp_service_account_key
 
   project = var.project_id
-  region  = "us-east4"
-  zone    = "us-east4-c"
+  region  = var.gcp_region
+  zone    = var.gcp_zone
 }
 
 provider "kubectl" {

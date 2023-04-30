@@ -4,4 +4,5 @@ resource "google_artifact_registry_repository" "primary" {
   format        = "DOCKER"
 
   project       = "${var.project_id}"
+  location      = "${var.gcp_region}"
 }
