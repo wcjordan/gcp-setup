@@ -103,6 +103,12 @@ Also need to annotate the default namespace manually until [issue #692](https://
 kubectl annotate namespace default cnrm.cloud.google.com/project-id=$PROJECT_ID
 ```
 
+### Get credentials for Docker to use Google Artifact Registry
+Replace us-eas4 with the region you've configured.
+```
+gcloud auth configure-docker us-east4-docker.pkg.dev
+```
+
 ## Setup DNS
 Terraform will setup the DNS, but you may need to update name servers in Google Domains (see [this GCloud tutorial, step #5](https://cloud.google.com/dns/docs/tutorials/create-domain-tutorial#update-nameservers)) or set an NS entry in the domain parent zone (see [this StackOverflow answer](https://stackoverflow.com/questions/23356881/manage-only-a-subdomain-with-google-cloud-dns)).
 

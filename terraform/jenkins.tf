@@ -79,6 +79,12 @@ resource "google_project_iam_member" "jenkins_sql_addmin_role" {
   member  = "serviceAccount:${google_service_account.jenkins.email}"
 }
 
+resource "google_project_iam_member" "jenkins_artifact_registry_writer_role" {
+  project = var.project_id
+  role    = "roles/artifactregistry.writer"
+  member  = "serviceAccount:${google_service_account.jenkins.email}"
+}
+
 resource "google_service_account_key" "jenkins" {
   service_account_id = google_service_account.jenkins.name
 }
