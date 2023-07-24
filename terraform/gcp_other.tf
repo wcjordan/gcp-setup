@@ -12,9 +12,12 @@ resource "google_sql_database_instance" "shared-cloudsql" {
   project          = "${var.project_id}"
   region           = "${var.gcp_region}"
   database_version = "POSTGRES_14"
+
   settings {
     availability_type = "ZONAL"
+    disk_type         = "PD_HDD"
     tier              = "db-f1-micro"
+
     backup_configuration {
       enabled                        = true
       point_in_time_recovery_enabled = true
