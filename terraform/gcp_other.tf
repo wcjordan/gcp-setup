@@ -15,7 +15,7 @@ resource "google_sql_database_instance" "shared-cloudsql" {
 
   settings {
     availability_type = "ZONAL"
-    disk_type         = "PD_HDD"
+    # disk_type         = "PD_HDD"
     tier              = "db-f1-micro"
 
     backup_configuration {
