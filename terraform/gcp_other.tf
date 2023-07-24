@@ -32,5 +32,5 @@ resource "google_sql_database_instance" "shared-cloudsql" {
     }
   }
 
-  deletion_protection  = "true"
+  deletion_protection  = "false"
 }
