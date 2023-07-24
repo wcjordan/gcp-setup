@@ -7,15 +7,15 @@ resource "google_artifact_registry_repository" "primary" {
   location      = "${var.gcp_region}"
 }
 
-resource "google_sql_database_instance" "shared-cloudsql" {
-  name             = "${var.project_name}-shared"
+resource "google_sql_database_instance" "shared-db" {
+  name             = "${var.project_name}-shared-db"
   project          = "${var.project_id}"
   region           = "${var.gcp_region}"
   database_version = "POSTGRES_14"
 
   settings {
     availability_type = "ZONAL"
-    # disk_type         = "PD_HDD"
+    disk_type         = "PD_HDD"
     tier              = "db-f1-micro"
 
     backup_configuration {
@@ -32,5 +32,5 @@ resource "google_sql_database_instance" "shared-cloudsql" {
     }
   }
 
-  deletion_protection  = "false"
+  deletion_protection  = "true"
 }
