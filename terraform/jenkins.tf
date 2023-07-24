@@ -154,7 +154,7 @@ resource "helm_release" "jenkins" {
   name       = "jenkins"
   chart      = "jenkins"
   repository = "https://charts.jenkins.io"
-  version    = "4.3.30"
+  version    = "4.4.1"
 
   # Wait for node pool to exist before installing Jenkins to avoid a timeout
   depends_on = [google_container_node_pool.primary_nodes]
