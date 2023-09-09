@@ -219,10 +219,46 @@ controller:
               - key: "SENTRY_TOKEN"
                 value: "${var.sentry_token}"
           numExecutors: 0
+          primaryView:
+            list:
+              columns:
+              - "status"
+              - "weather"
+              - "jobName"
+              - "lastSuccess"
+              - "lastFailure"
+              - "lastDuration"
+              - "buildButton"
+              - "favoriteColumn"
+              jobNames:
+              - "chalk"
+              - "chalk/main"
+              - "chalk_base"
+              name: "Mainline"
+              recurse: true
           securityRealm:
             googleOAuth2:
               clientId: "${var.oauth_client_id}"
               clientSecret: $${oauth_client_secret}
+          views:
+          - list:
+              columns:
+              - "status"
+              - "weather"
+              - "jobName"
+              - "lastSuccess"
+              - "lastFailure"
+              - "lastDuration"
+              - "buildButton"
+              - "favoriteColumn"
+              jobNames:
+              - "chalk"
+              - "chalk/main"
+              - "chalk_base"
+              name: "Mainline"
+              recurse: true
+          - all:
+              name: "all"
         security:
           queueItemAuthenticator:
             authenticators:
