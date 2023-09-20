@@ -193,6 +193,11 @@ controller:
                   id: "browserstack_key"
                   username: "${var.browserstack_username}"
                   accesskey: $${browserstack_access_key}
+              - gitHubApp:
+                  appID: "${var.github_app_id}"
+                  description: "GitHub app"
+                  id: "github-app"
+                  privateKey: "${var.github_app_private_key}"
         jenkins:
           authorizationStrategy:
             globalMatrix:

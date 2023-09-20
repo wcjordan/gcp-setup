@@ -28,9 +28,20 @@ variable "gcp_service_account_key" {
   description = "The contents of a GCP service account key file in JSON format"
   type        = string
 }
+
 variable "github_ssh_key" {
   default     = ""
   description = "SSH private key for Jenkins to access Github repos"
+  type        = string
+}
+variable "github_app_id" {
+  default     = ""
+  description = "Github App ID for Jenkins to access Github"
+  type        = string
+}
+variable "github_app_private_key" {
+  default     = ""
+  description = "Github App private key for Jenkins to access Github"
   type        = string
 }
 

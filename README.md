@@ -49,22 +49,23 @@ gcloud iam service-accounts keys create <SECURE WORKSPACE>/service_account_key.j
 ```
 
 ## Set up a Workspace in Terraform Cloud
-Set variables for the following fields in Terraform Cloud
-See variables.tf for field descriptions
+Set variables for the following fields in Terraform Cloud  
+See variables.tf for field descriptions  
 
-project_name & project_id - your GCP project details
-admin_email - Your email address
-dns_name - Your domain e.g. mysite.com
+project_name & project_id - your GCP project details  
+admin_email - Your email address  
+dns_name - Your domain e.g. mysite.com  
 
-browserstack_username & browserstack_access_key - See username & access key under [Automate section of settings](https://www.browserstack.com/accounts/settings)
+browserstack_username & browserstack_access_key - See username & access key under [Automate section of settings](https://www.browserstack.com/accounts/settings)  
 
-oauth_client_id & oauth_client_secret - See Credentials for Jenkins OAuth below
+oauth_client_id & oauth_client_secret - See Credentials for Jenkins OAuth below  
+github_app_id & github_app_private_key - Follow the [Jenkins github-branch-source-plugin instructions](https://github.com/jenkinsci/github-branch-source-plugin/blob/master/docs/github-app.adoc)  
 
-sentry_dsn - A Sentry.io DSN.  https://sentry.io/settings/<ORG_ID>/projects/<PROJECT_ID>/keys/
-sentry_token - A [Sentry.io auth token](https://sentry.io/settings/account/api/auth-tokens/)
+sentry_dsn - A Sentry.io DSN.  https://sentry.io/settings/<ORG_ID>/projects/<PROJECT_ID>/keys/  
+sentry_token - A [Sentry.io auth token](https://sentry.io/settings/account/api/auth-tokens/)  
 
-gcp_service_account_key - See Create a service account for Terraform section above
-chalk_oauth_client_secret & chalk_oauth_refresh_token - See the [OAuth Setup section of Chalk README.md](https://github.com/wcjordan/chalk/blob/main/README.md)
+gcp_service_account_key - See Create a service account for Terraform section above  
+chalk_oauth_client_secret & chalk_oauth_refresh_token - See the [OAuth Setup section of Chalk README.md](https://github.com/wcjordan/chalk/blob/main/README.md)  
 
 ### Create Credentials for Jenkins OAuth
 Navigate to `https://console.cloud.google.com/apis/credentials`  
@@ -78,7 +79,7 @@ Set type to `Web Application`
 Set domain URI to `http://jenkins.${dns_name}`  
 Set redirect URI to `http://jenkins.${dns_name}/securityRealm/finishLogin`  
 
-Set the Client ID & Client Secret variables in Terraform Cloud  
+Set the oauth_client_id & oauth_client_secret variables in Terraform Cloud  
 For more details see [Google Login Plugin](https://github.com/jenkinsci/google-login-plugin/blob/master/README.md) & [StackOverlow](https://stackoverflow.com/a/55595582)
 
 ### Add Secrets
@@ -110,7 +111,7 @@ gcloud auth configure-docker us-east4-docker.pkg.dev
 ```
 
 ## Setup DNS
-Terraform will setup the DNS, but you may need to update name servers in Google Domains (see [this GCloud tutorial, step #5](https://cloud.google.com/dns/docs/tutorials/create-domain-tutorial#update-nameservers)) or set an NS entry in the domain parent zone (see [this StackOverflow answer](https://stackoverflow.com/questions/23356881/manage-only-a-subdomain-with-google-cloud-dns)).
+Terraform will setup the DNS, but you may need to update name servers in Google Domains (see [this GCloud tutorial, step #5](https://cloud.google.com/dns/docs/tutorials/create-domain-tutorial#update-nameservers)) or set an NS entry in the domain parent zone (see [this StackOverflow answer](https://stackoverflow.com/questions/23356881/manage-only-a-subdomain-with-google-cloud-dns)).  
 
 Your DNS NS data for this step can be found on [the GCloud DNS page](https://console.cloud.google.com/net-services/dns).
 
