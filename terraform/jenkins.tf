@@ -172,6 +172,8 @@ controller:
     value: "${google_service_account_key.jenkins.private_key}"
   - name: oauth_client_secret
     value: "${var.oauth_client_secret}"
+  - name: github_app_private_key
+    value: "${var.github_app_private_key}"
   ingress:
     annotations:
       kubernetes.io/ingress.global-static-ip-name: "${var.project_name}-jenkins-ip"
@@ -197,7 +199,7 @@ controller:
                   appID: "${var.github_app_id}"
                   description: "GitHub app"
                   id: "github-app"
-                  privateKey: "${var.github_app_private_key}"
+                  privateKey: $${github_app_private_key}
         jenkins:
           authorizationStrategy:
             globalMatrix:
