@@ -173,7 +173,7 @@ controller:
   - name: oauth_client_secret
     value: "${var.oauth_client_secret}"
   - name: github_app_private_key
-    value: "${var.github_app_private_key}"
+    value: "${base64encode(var.github_app_private_key)}"
   ingress:
     annotations:
       kubernetes.io/ingress.global-static-ip-name: "${var.project_name}-jenkins-ip"
