@@ -59,7 +59,7 @@ dns_name - Your domain e.g. mysite.com
 browserstack_username & browserstack_access_key - See username & access key under [Automate section of settings](https://www.browserstack.com/accounts/settings)  
 
 oauth_client_id & oauth_client_secret - See Credentials for Jenkins OAuth below  
-github_app_id & github_app_private_key - Follow the [Jenkins github-branch-source-plugin instructions](https://github.com/jenkinsci/github-branch-source-plugin/blob/master/docs/github-app.adoc)  
+github_app_id & github_app_private_key - Follow the [Jenkins github-branch-source-plugin instructions](https://github.com/jenkinsci/github-branch-source-plugin/blob/master/docs/github-app.adoc).  The private key needs to be set as a single line.  Remove the BEGIN PRIVATE KEY and END PRIVATE KEY parts.
 
 sentry_dsn - A Sentry.io DSN.  https://sentry.io/settings/<ORG_ID>/projects/<PROJECT_ID>/keys/  
 sentry_token - A [Sentry.io auth token](https://sentry.io/settings/account/api/auth-tokens/)  
