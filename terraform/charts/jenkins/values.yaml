@@ -8,6 +8,7 @@ controller:
     - browserstack-integration
     - build-failure-analyzer
     - docker-workflow
+    - github-checks
     - google-container-registry-auth
     - google-login
     - kubernetes-credentials-provider
