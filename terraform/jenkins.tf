@@ -178,6 +178,13 @@ controller:
     annotations:
       kubernetes.io/ingress.global-static-ip-name: "${var.project_name}-jenkins-ip"
     hostname: "jenkins.${var.dns_name}"
+  resources:
+    requests:
+      cpu: 50m
+      memory: 2048Mi
+    limits:
+      cpu: 2000m
+      memory: 2048Mi
   JCasC:
     defaultConfig: false
     configScripts:
