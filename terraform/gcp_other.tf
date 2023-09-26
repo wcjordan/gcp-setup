@@ -21,6 +21,10 @@ resource "google_sql_database_instance" "shared-db" {
     backup_configuration {
       enabled                        = true
       point_in_time_recovery_enabled = true
+      backup_retention_settings {
+        retention_unit = "COUNT"
+        retained_backups = 30
+      }
     }
     location_preference {
       zone = "${var.gcp_zone}"
