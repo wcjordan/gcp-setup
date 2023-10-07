@@ -194,6 +194,7 @@ controller:
             domainCredentials:
             - credentials:
               - googleRobotPrivateKey:
+                  id: "gke_key"
                   projectId: "gke_key"
                   serviceAccountConfig:
                     json:
