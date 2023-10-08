@@ -18,29 +18,57 @@ resource "google_dns_record_set" "jenkins-recordset" {
 }
 
 # Give default service account access to secrets for Jenkins Kubernetes Credentials Provider plugin
-resource "kubernetes_role" "jenkins-secrets" {
+resource "kubernetes_role" "jenkins-secrets-list" {
   metadata {
-    name      = "jenkins-secrets"
+    name      = "jenkins-secrets-list"
     namespace = "default"
   }
 
   rule {
     api_groups = [""]
     resources  = ["secrets"]
-    # resource_names = ["jenkins-gke-sa"]
-    verbs = ["get", "list", "watch"]
+    verbs = ["list"]
+  }
+}
+resource "kubernetes_role" "jenkins-secret-resources" {
+  metadata {
+    name      = "jenkins-secret-resources"
+    namespace = "default"
+  }
+
+  rule {
+    api_groups = [""]
+    resources  = ["secrets"]
+    resource_names = ["jenkins-gke-sa"]
+    verbs = ["get", "watch"]
   }
 }
 
-resource "kubernetes_role_binding" "jenkins-secrets" {
+resource "kubernetes_role_binding" "jenkins-secrets-list" {
   metadata {
-    name      = "jenkins-secrets"
+    name      = "jenkins-secrets-list"
     namespace = "default"
   }
   role_ref {
     api_group = "rbac.authorization.k8s.io"
     kind      = "Role"
-    name      = "jenkins-secrets"
+    name      = "jenkins-secrets-list"
+  }
+  subject {
+    kind      = "ServiceAccount"
+    name      = "jenkins"
+    namespace = "default"
+  }
+}
+resource "kubernetes_role_binding" "jenkins-secret-resources" {
+  metadata {
+    name      = "jenkins-secret-resources"
+    namespace = "default"
+  }
+  role_ref {
+    api_group = "rbac.authorization.k8s.io"
+    kind      = "Role"
+    name      = "jenkins-secret-resources"
   }
   subject {
     kind      = "ServiceAccount"
