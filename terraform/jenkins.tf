@@ -27,7 +27,7 @@ resource "kubernetes_role" "jenkins-secrets" {
   rule {
     api_groups = [""]
     resources  = ["secrets"]
-    resource_names = ["jenkins-gke-sa"]
+    # resource_names = ["jenkins-gke-sa"]
     verbs = ["get", "list", "watch"]
   }
 }
