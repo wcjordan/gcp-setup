@@ -27,7 +27,7 @@ resource "kubernetes_role" "jenkins-secrets" {
   rule {
     api_groups = [""]
     resources  = ["secrets"]
-    # resource_names = ["jenkins-gke-sa"]
+    resource_names = ["jenkins-gke-sa"]
     verbs = ["get", "list", "watch"]
   }
 }
@@ -220,6 +220,7 @@ controller:
               credentialsId: "gke_key"
               jenkinsTunnel: "jenkins-agent.default.svc.cluster.local:50000"
               name: "kubernetes"
+              namespace: "jenkins-worker"
           globalNodeProperties:
           - envVars:
               env:
