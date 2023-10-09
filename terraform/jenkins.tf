@@ -179,11 +179,20 @@ controller:
     hostname: "jenkins.${var.dns_name}"
   resources:
     requests:
-      cpu: 50m
+      cpu: 250m
       memory: 2048Mi
     limits:
-      cpu: 2000m
+      cpu: 250m
       memory: 2048Mi
+  sidecars:
+    configAutoReload:
+      resources:
+        requests:
+          cpu: 50m
+          memory: 100Mi
+        limits:
+          cpu: 50m
+          memory: 100Mi
   JCasC:
     defaultConfig: false
     configScripts:
