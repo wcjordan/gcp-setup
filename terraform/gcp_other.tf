@@ -38,3 +38,9 @@ resource "google_sql_database_instance" "shared-db" {
 
   deletion_protection  = "true"
 }
+
+resource "google_dns_managed_zone" "parent-zone" {
+  name        = "${var.project_name}-dns"
+  dns_name    = "${var.dns_name}."
+  description = "Top level DNS zone for ${var.project_name}."
+}

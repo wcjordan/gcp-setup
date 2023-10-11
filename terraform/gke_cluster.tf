@@ -78,3 +78,38 @@ resource "helm_release" "ingress-nginx" {
   # Wait for node pool to exist before installing nginx controller to avoid a timeout
   depends_on = [google_container_node_pool.primary_nodes]
 }
+
+resource "kubernetes_annotations" "default-namespace-annotation" {
+  api_version = "v1"
+  kind        = "Namespace"
+  metadata {
+    name = "default"
+  }
+  annotations = {
+    "cnrm.cloud.google.com/project-id" = var.project_id
+  }
+}
+resource "kubernetes_namespace" "dev-namespace" {
+  metadata {
+    name = "dev"
+    annotations = {
+      "cnrm.cloud.google.com/project-id" = var.project_id
+    }
+  }
+}
+resource "kubernetes_namespace" "test-namespace" {
+  metadata {
+    name = "test"
+    annotations = {
+      "cnrm.cloud.google.com/project-id" = var.project_id
+    }
+  }
+}
+resource "kubernetes_namespace" "prod-namespace" {
+  metadata {
+    name = "prod"
+    annotations = {
+      "cnrm.cloud.google.com/project-id" = var.project_id
+    }
+  }
+}

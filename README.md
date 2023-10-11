@@ -99,11 +99,6 @@ gcloud config configurations list
 kubectl config get-contexts
 ```
 
-Also need to annotate the default  namespace manually until [issue #692](https://github.com/hashicorp/terraform-provider-kubernetes/issues/692) is complete  
-```
-kubectl annotate namespace default cnrm.cloud.google.com/project-id=$PROJECT_ID
-```
-
 ### Get credentials for Docker to use Google Artifact Registry
 Replace us-eas4 with the region you've configured.
 ```

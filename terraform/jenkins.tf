@@ -1,10 +1,4 @@
-# DNS zone & entry for jenkins
-resource "google_dns_managed_zone" "parent-zone" {
-  name        = "${var.project_name}-dns"
-  dns_name    = "${var.dns_name}."
-  description = "Top level DNS zone for ${var.project_name}."
-}
-
+# DNS entry for jenkins
 resource "google_compute_global_address" "jenkins_static_ip" {
   name = "${var.project_name}-jenkins-ip"
 }
@@ -17,11 +11,25 @@ resource "google_dns_record_set" "jenkins-recordset" {
   ttl          = 1800
 }
 
+resource "kubernetes_namespace" "jenkins-worker" {
+  metadata {
+    name = "jenkins-worker"
+    annotations = {
+      "cnrm.cloud.google.com/project-id" = var.project_id
+    }
+  }
+}
+resource "kubernetes_namespace" "jenkins-secrets-namespace" {
+  metadata {
+    name = "jenkins-secrets"
+  }
+}
+
 # Give default service account access to secrets for Jenkins Kubernetes Credentials Provider plugin
-resource "kubernetes_role" "jenkins-secrets" {
+resource "kubernetes_role" "jenkins-secrets-role" {
   metadata {
     name      = "jenkins-secrets"
-    namespace = "default"
+    namespace = "jenkins-secrets"
   }
 
   rule {
@@ -31,10 +39,10 @@ resource "kubernetes_role" "jenkins-secrets" {
   }
 }
 
-resource "kubernetes_role_binding" "jenkins-secrets" {
+resource "kubernetes_role_binding" "jenkins-secrets-role-binding" {
   metadata {
     name      = "jenkins-secrets"
-    namespace = "default"
+    namespace = "jenkins-secrets"
   }
   role_ref {
     api_group = "rbac.authorization.k8s.io"
@@ -91,6 +99,7 @@ resource "google_service_account_key" "jenkins" {
 resource "kubernetes_secret" "jenkins-gke-sa" {
   metadata {
     name = "jenkins-gke-sa"
+    namespace = "jenkins-secrets"
     labels = {
       "jenkins.io/credentials-type" = "secretFile"
     }
@@ -109,6 +118,7 @@ resource "kubernetes_secret" "jenkins-gke-sa" {
 resource "kubernetes_secret" "chalk-oauth-web-secret" {
   metadata {
     name = "chalk-oauth-web-secret"
+    namespace = "jenkins-secrets"
     labels = {
       "jenkins.io/credentials-type" = "secretFile"
     }
@@ -127,6 +137,7 @@ resource "kubernetes_secret" "chalk-oauth-web-secret" {
 resource "kubernetes_secret" "github-ssh-key-secret" {
   metadata {
     name = "github-ssh-key-secret"
+    namespace = "jenkins-secrets"
     labels = {
       "jenkins.io/credentials-type" = "basicSSHUserPrivateKey"
     }
@@ -139,15 +150,6 @@ resource "kubernetes_secret" "github-ssh-key-secret" {
   }
   binary_data = {
     privateKey = base64encode(var.github_ssh_key)
-  }
-}
-
-resource "kubernetes_namespace" "jenkins-worker" {
-  metadata {
-    name = "jenkins-worker"
-    annotations = {
-      "cnrm.cloud.google.com/project-id" = var.project_id
-    }
   }
 }
 
