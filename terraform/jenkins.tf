@@ -19,9 +19,9 @@ resource "kubernetes_namespace" "jenkins-worker" {
     }
   }
 }
-resource "kubernetes_namespace" "jenkins-secrets-namespace" {
+resource "kubernetes_namespace" "jenkins-namespace" {
   metadata {
-    name = "jenkins-secrets"
+    name = "jenkins-controller"
   }
 }
 
@@ -29,7 +29,6 @@ resource "kubernetes_namespace" "jenkins-secrets-namespace" {
 resource "kubernetes_role" "jenkins-secrets-role" {
   metadata {
     name      = "jenkins-secrets"
-    namespace = "jenkins-secrets"
   }
 
   rule {
@@ -42,7 +41,6 @@ resource "kubernetes_role" "jenkins-secrets-role" {
 resource "kubernetes_role_binding" "jenkins-secrets-role-binding" {
   metadata {
     name      = "jenkins-secrets"
-    namespace = "jenkins-secrets"
   }
   role_ref {
     api_group = "rbac.authorization.k8s.io"
@@ -99,7 +97,6 @@ resource "google_service_account_key" "jenkins" {
 resource "kubernetes_secret" "jenkins-gke-sa" {
   metadata {
     name = "jenkins-gke-sa"
-    namespace = "jenkins-secrets"
     labels = {
       "jenkins.io/credentials-type" = "secretFile"
     }
@@ -118,7 +115,6 @@ resource "kubernetes_secret" "jenkins-gke-sa" {
 resource "kubernetes_secret" "chalk-oauth-web-secret" {
   metadata {
     name = "chalk-oauth-web-secret"
-    namespace = "jenkins-secrets"
     labels = {
       "jenkins.io/credentials-type" = "secretFile"
     }
@@ -137,7 +133,6 @@ resource "kubernetes_secret" "chalk-oauth-web-secret" {
 resource "kubernetes_secret" "github-ssh-key-secret" {
   metadata {
     name = "github-ssh-key-secret"
-    namespace = "jenkins-secrets"
     labels = {
       "jenkins.io/credentials-type" = "basicSSHUserPrivateKey"
     }
