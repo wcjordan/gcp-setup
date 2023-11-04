@@ -1,6 +1,7 @@
 # GKE cluster
 resource "google_container_cluster" "primary" {
   name = "${var.project_name}-gke"
+  location = "${var.gcp_zone}"
 
   enable_shielded_nodes = true
   release_channel {
@@ -32,6 +33,7 @@ resource "google_container_cluster" "primary" {
 resource "google_container_node_pool" "primary_nodes" {
   name    = "${var.project_name}-gke-node-pool"
   cluster = google_container_cluster.primary.name
+  location = "${var.gcp_zone}"
 
   initial_node_count = 1
   autoscaling {
