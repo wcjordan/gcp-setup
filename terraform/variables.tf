@@ -29,11 +29,6 @@ variable "gcp_service_account_key" {
   type        = string
 }
 
-variable "github_ssh_key" {
-  default     = ""
-  description = "SSH private key for Jenkins to access Github repos"
-  type        = string
-}
 variable "github_app_id" {
   default     = ""
   description = "Github App ID for Jenkins to access Github"

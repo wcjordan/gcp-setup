@@ -130,24 +130,6 @@ resource "kubernetes_secret" "chalk-oauth-web-secret" {
   }
 }
 
-resource "kubernetes_secret" "github-ssh-key-secret" {
-  metadata {
-    name = "github-ssh-key-secret"
-    labels = {
-      "jenkins.io/credentials-type" = "basicSSHUserPrivateKey"
-    }
-    annotations = {
-      "kubernetes.io/credentials-description" = "SSH private key for Jenkins to access Github repos"
-    }
-  }
-  data = {
-    username = "github_ssh"
-  }
-  binary_data = {
-    privateKey = base64encode(var.github_ssh_key)
-  }
-}
-
 # Jenkins Helm install
 resource "helm_release" "jenkins" {
   name       = "jenkins"

@@ -4,19 +4,18 @@
 
 [Create a GCP project](https://console.cloud.google.com/projectcreate)
 Use `gcloud init` to configure gcloud to use the new project.  
-Re-initialize a 2nd time after enabling services (see below) to allow setting zone & region  
-
-Enable APIs:
+Enable compute engine API:
 ```
-gcloud services enable compute.googleapis.com
-gcloud services enable cloudresourcemanager.googleapis.com
-gcloud services enable iam.googleapis.com
-gcloud services enable container.googleapis.com
-gcloud services enable sqladmin.googleapis.com
-gcloud services enable dns.googleapis.com
-gcloud services enable identitytoolkit.googleapis.com
 gcloud services enable artifactregistry.googleapis.com
+gcloud services enable cloudresourcemanager.googleapis.com
+gcloud services enable compute.googleapis.com
+gcloud services enable container.googleapis.com
+gcloud services enable dns.googleapis.com
+gcloud services enable iam.googleapis.com
+gcloud services enable identitytoolkit.googleapis.com
+gcloud services enable sqladmin.googleapis.com
 ```
+Re-initialize a 2nd time after enabling services (see below) to allow setting zone & region  
 
 ## Create a service account for Terraform
 ```
@@ -49,10 +48,14 @@ gcloud iam service-accounts keys create <SECURE WORKSPACE>/service_account_key.j
 ```
 
 ## Set up a Workspace in Terraform Cloud
+[Create a new workspace](https://app.terraform.io/app)  
+Version control workflow -> Github -> `gcp-setup` repo -> `terraform` subdirectory  
+
 Set variables for the following fields in Terraform Cloud  
 See variables.tf for field descriptions  
 
 project_name & project_id - your GCP project details  
+gcp_region & gcp_zone  
 admin_email - Your email address  
 dns_name - Your domain e.g. mysite.com  
 
@@ -81,9 +84,6 @@ Set redirect URI to `http://jenkins.${dns_name}/securityRealm/finishLogin`
 
 Set the oauth_client_id & oauth_client_secret variables in Terraform Cloud  
 For more details see [Google Login Plugin](https://github.com/jenkinsci/google-login-plugin/blob/master/README.md) & [StackOverlow](https://stackoverflow.com/a/55595582)
-
-### Add Secrets
-See instructions within each repos README
 
 ## Apply Terraform to create GKE cluster and install Jenkins
 Run Terraform from Terraform Cloud
