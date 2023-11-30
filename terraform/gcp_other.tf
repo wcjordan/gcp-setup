@@ -44,3 +44,11 @@ resource "google_dns_managed_zone" "parent-zone" {
   dns_name    = "${var.dns_name}."
   description = "Top level DNS zone for ${var.project_name}."
 }
+
+# Storage bucket for capturing web session data
+resource "google_storage_bucket" "gcf_source" {
+  name                        = "flipperkid-chalk-web-session-data"
+  location                    = "US"
+  uniform_bucket_level_access = true
+  public_access_prevention    = "enforced"
+}
