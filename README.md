@@ -64,11 +64,7 @@ browserstack_username & browserstack_access_key - See username & access key unde
 oauth_client_id & oauth_client_secret - See Credentials for Jenkins OAuth below  
 github_app_id & github_app_private_key - Follow the [Jenkins github-branch-source-plugin instructions](https://github.com/jenkinsci/github-branch-source-plugin/blob/master/docs/github-app.adoc).  The private key needs to be set as a single line.  Remove the BEGIN PRIVATE KEY and END PRIVATE KEY parts.
 
-sentry_dsn - A Sentry.io DSN.  https://sentry.io/settings/<ORG_ID>/projects/<PROJECT_ID>/keys/  
-sentry_token - A [Sentry.io auth token](https://sentry.io/settings/account/api/auth-tokens/)  
-
 gcp_service_account_key - See Create a service account for Terraform section above  
-chalk_oauth_client_secret & chalk_oauth_refresh_token - See the [OAuth Setup section of Chalk README.md](https://github.com/wcjordan/chalk/blob/main/README.md)  
 
 ### Create Credentials for Jenkins OAuth
 Navigate to `https://console.cloud.google.com/apis/credentials`  

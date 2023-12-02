@@ -112,24 +112,6 @@ resource "kubernetes_secret" "jenkins-gke-sa" {
   }
 }
 
-resource "kubernetes_secret" "chalk-oauth-web-secret" {
-  metadata {
-    name = "chalk-oauth-web-secret"
-    labels = {
-      "jenkins.io/credentials-type" = "secretFile"
-    }
-    annotations = {
-      "kubernetes.io/credentials-description" = "OAuth secret for web logins used by Chalk build"
-    }
-  }
-  data = {
-    filename = "oauth_web_client_secret.json"
-  }
-  binary_data = {
-    data = base64encode(var.chalk_oauth_client_secret)
-  }
-}
-
 # Jenkins Helm install
 resource "helm_release" "jenkins" {
   name       = "jenkins"
@@ -221,12 +203,8 @@ controller:
                 value: "${var.project_id}"
               - key: "GCP_PROJECT_NAME"
                 value: "${var.project_name}"
-              - key: "CHALK_OAUTH_REFRESH_TOKEN"
-                value: "${var.chalk_oauth_refresh_token}"
-              - key: "SENTRY_DSN"
-                value: "${var.sentry_dsn}"
-              - key: "SENTRY_TOKEN"
-                value: "${var.sentry_token}"
+              - key: "ROOT_DOMAIN"
+                value: "${var.dns_name}"
           numExecutors: 0
           primaryView:
             list:

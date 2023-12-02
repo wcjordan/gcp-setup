@@ -57,22 +57,3 @@ variable "oauth_client_secret" {
   default     = ""
   description = "OAuth client secret"
 }
-
-variable "sentry_dsn" {
-  default     = ""
-  description = "Sentry DSN used by Jenkins for CI deployments"
-}
-variable "sentry_token" {
-  default     = ""
-  description = "Sentry token used by Jenkins for CI deployments"
-}
-
-variable "chalk_oauth_client_secret" {
-  default     = ""
-  description = "The contents of an OAuth client secret in JSON format"
-  type        = string
-}
-variable "chalk_oauth_refresh_token" {
-  default     = ""
-  description = "OAuth refresh token for CI Selenium tests for Chalk"
-}
