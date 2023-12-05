@@ -141,6 +141,9 @@ controller:
     annotations:
       kubernetes.io/ingress.global-static-ip-name: "${var.project_name}-jenkins-ip"
     hostname: "jenkins.${var.dns_name}"
+  probes:
+    livenessProbe:
+      initialDelaySeconds: 600
   resources:
     requests:
       cpu: 500m
