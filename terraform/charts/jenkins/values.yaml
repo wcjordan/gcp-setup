@@ -21,4 +21,5 @@ controller:
     - configuration-as-code
   ingress:
     enabled: true
-  tag: lts-jdk11
+  image:
+    tag: lts-jdk11
