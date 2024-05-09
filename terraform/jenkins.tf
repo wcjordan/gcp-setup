@@ -117,7 +117,7 @@ resource "helm_release" "jenkins" {
   name       = "jenkins"
   chart      = "jenkins"
   repository = "https://charts.jenkins.io"
-  version    = "5.0.17"
+  version    = "5.1.12"
 
   # Wait for node pool to exist before installing Jenkins to avoid a timeout
   depends_on = [google_container_node_pool.primary_nodes]
@@ -142,8 +142,9 @@ controller:
       kubernetes.io/ingress.global-static-ip-name: "${var.project_name}-jenkins-ip"
     hostname: "jenkins.${var.dns_name}"
   probes:
-    livenessProbe:
-      initialDelaySeconds: 600
+    startupProbe:
+      initialDelaySeconds: 120
+      periodSeconds: 20
   resources:
     requests:
       cpu: 500m
