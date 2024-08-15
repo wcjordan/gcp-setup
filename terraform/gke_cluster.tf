@@ -63,7 +63,7 @@ resource "google_container_node_pool" "primary_nodes" {
     }
 
     kubelet_config {
-      cpu_cfs_quota = false
+      cpu_manager_policy = ""
     }
 
     oauth_scopes = [
