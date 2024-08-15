@@ -62,6 +62,7 @@ resource "google_container_node_pool" "primary_nodes" {
       enable_secure_boot = true
     }
 
+    # Needed to avoid an error w/ no content updates.  Try removing next time you update this nodepool.
     kubelet_config {
       cpu_manager_policy = ""
     }
