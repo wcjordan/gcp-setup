@@ -62,10 +62,6 @@ resource "google_container_node_pool" "primary_nodes" {
       enable_secure_boot = true
     }
 
-    kubelet_config {
-      cpu_manager_policy = ""
-    }
-
     oauth_scopes = [
       "https://www.googleapis.com/auth/cloud-platform.read-only",
       "https://www.googleapis.com/auth/devstorage.read_only",
