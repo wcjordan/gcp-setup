@@ -5,6 +5,21 @@ resource "google_artifact_registry_repository" "primary" {
 
   project       = "${var.project_id}"
   location      = "${var.gcp_region}"
+
+  cleanup_policies {
+    id     = "Delete older than 90 days"
+    action = "DELETE"
+    condition {
+      older_than = "7776000s"
+    }
+  }
+  cleanup_policies {
+    id     = "Keep last 10"
+    action = "KEEP"
+    most_recent_versions {
+      keep_count = 5
+    }
+  }
 }
 
 resource "google_sql_database_instance" "shared-db" {
