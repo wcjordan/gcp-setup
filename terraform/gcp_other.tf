@@ -14,7 +14,7 @@ resource "google_artifact_registry_repository" "primary" {
     }
   }
   cleanup_policies {
-    id     = "Keep last 10"
+    id     = "Keep last 5 versions"
     action = "KEEP"
     most_recent_versions {
       keep_count = 5
