@@ -161,6 +161,8 @@ controller:
         limits:
           cpu: 50m
           memory: 100Mi
+  overwritePlugins: true
+  installLatestSpecifiedPlugins: true
   JCasC:
     defaultConfig: false
     configScripts:
