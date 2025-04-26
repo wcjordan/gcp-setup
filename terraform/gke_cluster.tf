@@ -80,9 +80,47 @@ resource "helm_release" "ingress-nginx" {
   name       = "ingress-nginx"
   chart      = "ingress-nginx"
   repository = "https://kubernetes.github.io/ingress-nginx/"
-  version    = "4.2.5"
+  version    = "4.12.1"
 
-  # Wait for node pool to exist before installing nginx controller to avoid a timeout
+  depends_on = [google_container_node_pool.primary_nodes]
+}
+
+
+resource "helm_release" "cert-manager" {
+  name              = "cert-manager"
+  chart             = "cert-manager"
+  repository        = "https://charts.jetstack.io"
+  version           = "v1.17.1"
+  namespace         = "cert-manager"
+  create_namespace  = "true"
+  set = [
+    {
+      name  = "crds.enabled"
+      value = "true"
+    }
+  ]
+
+  depends_on = [google_container_node_pool.primary_nodes]
+}
+
+resource "kubectl_manifest" "cert-issuer" {
+    yaml_body = <<YAML
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: letsencrypt-cluster-cert-issuer
+spec:
+  acme:
+    email: ${var.admin_email}
+    server: https://acme-v02.api.letsencrypt.org/directory
+    privateKeySecretRef:
+      name: letsencrypt-cluster-cert-issuer-private-key
+    solvers:
+    - http01:
+        ingress:
+          ingressClassName: nginx
+YAML
+
   depends_on = [google_container_node_pool.primary_nodes]
 }
 
