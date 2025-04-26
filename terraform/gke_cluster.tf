@@ -93,12 +93,10 @@ resource "helm_release" "cert-manager" {
   version           = "v1.17.1"
   namespace         = "cert-manager"
   create_namespace  = "true"
-  set = [
-    {
-      name  = "crds.enabled"
-      value = "true"
-    }
-  ]
+  set {
+    name  = "crds.enabled"
+    value = "true"
+  }
 
   depends_on = [google_container_node_pool.primary_nodes]
 }
