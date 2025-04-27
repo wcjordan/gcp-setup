@@ -266,6 +266,10 @@ controller:
           location:
             adminAddress: "${var.admin_email}"
             url: "http://jenkins.${var.dns_name}/"
+          throttleJobProperty:
+            categories:
+            - categoryName: "chalk-ci"
+              maxConcurrentTotal: 1
           timestamper:
             allPipelines: true
 YAML
