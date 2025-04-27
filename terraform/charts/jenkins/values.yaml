@@ -2,22 +2,22 @@ agent:
   namespace: jenkins-worker
 
 controller:
-  additionalPlugins:
+  installPlugins:
     - authorize-project
     - blueocean
     - browserstack-integration
     - build-failure-analyzer
+    - configuration-as-code
     - docker-workflow
     - github-checks
     - google-container-registry-auth
     - google-login
+    - git
+    - kubernetes
     - kubernetes-credentials-provider
     - matrix-auth
+    - throttle-concurrents
     - timestamper
-  installPlugins:
-    - kubernetes
     - workflow-aggregator
-    - git
-    - configuration-as-code
   ingress:
     enabled: true
