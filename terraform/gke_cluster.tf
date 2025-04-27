@@ -76,15 +76,19 @@ resource "google_container_node_pool" "primary_nodes" {
   }
 }
 
-resource "helm_release" "ingress-nginx" {
-  name       = "ingress-nginx"
-  chart      = "ingress-nginx"
-  repository = "https://kubernetes.github.io/ingress-nginx/"
-  version    = "4.12.1"
+resource "kubectl_manifest" "https_redirect" {
+    yaml_body = <<YAML
+apiVersion: networking.gke.io/v1beta1
+kind: FrontendConfig
+metadata:
+  name: https_redirect
+spec:
+  redirectToHttps:
+    enabled: true
+YAML
 
   depends_on = [google_container_node_pool.primary_nodes]
 }
-
 
 resource "helm_release" "cert-manager" {
   name              = "cert-manager"
