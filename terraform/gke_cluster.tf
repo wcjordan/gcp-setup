@@ -76,20 +76,6 @@ resource "google_container_node_pool" "primary_nodes" {
   }
 }
 
-resource "kubectl_manifest" "https-redirect" {
-    yaml_body = <<YAML
-apiVersion: networking.gke.io/v1beta1
-kind: FrontendConfig
-metadata:
-  name: https-redirect
-spec:
-  redirectToHttps:
-    enabled: true
-YAML
-
-  depends_on = [google_container_node_pool.primary_nodes]
-}
-
 resource "helm_release" "cert-manager" {
   name              = "cert-manager"
   chart             = "cert-manager"
