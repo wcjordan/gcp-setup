@@ -76,12 +76,12 @@ resource "google_container_node_pool" "primary_nodes" {
   }
 }
 
-resource "kubectl_manifest" "https_redirect" {
+resource "kubectl_manifest" "https-redirect" {
     yaml_body = <<YAML
 apiVersion: networking.gke.io/v1beta1
 kind: FrontendConfig
 metadata:
-  name: https_redirect
+  name: https-redirect
 spec:
   redirectToHttps:
     enabled: true
