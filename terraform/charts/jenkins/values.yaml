@@ -9,6 +9,7 @@ controller:
     - build-failure-analyzer
     - configuration-as-code
     - docker-workflow
+    - eddsa-api  # Needed to work around issues.  Try removing in the future.
     - github-checks
     - google-container-registry-auth
     - google-login
