@@ -26,7 +26,7 @@ resource "google_sql_database_instance" "shared-db" {
   name             = "${var.project_name}-shared-db"
   project          = "${var.project_id}"
   region           = "${var.gcp_region}"
-  database_version = "POSTGRES_14"
+  database_version = "POSTGRES_18"
 
   settings {
     availability_type = "ZONAL"
