@@ -200,7 +200,7 @@ controller:
                   id: "claude-code-oauth-token"
                   secret: $${claude_code_oauth_token}
               - usernamePassword:
-                  id: "jira-credentials"
+                  id: "jira-api-key"
                   username: "${var.jira_api_username}"
                   password: $${jira_api_key}
         jenkins:
