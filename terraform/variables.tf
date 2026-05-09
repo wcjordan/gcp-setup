@@ -57,3 +57,31 @@ variable "oauth_client_secret" {
   default     = ""
   description = "OAuth client secret"
 }
+
+variable "jenkins_api_key" {
+  default     = ""
+  description = "Jenkins API key"
+  type        = string
+}
+variable "claude_code_oauth_token" {
+  default     = ""
+  description = "Claude Code OAuth token"
+  type        = string
+}
+
+variable "jira_api_username" {
+  default     = ""
+  description = "Jira API username"
+  type        = string
+}
+variable "jira_api_key" {
+  default     = ""
+  description = "Jira API key (password)"
+  type        = string
+}
+
+variable "jira_cloud_id" {
+  default     = ""
+  description = "Jira Cloud ID"
+  type        = string
+}

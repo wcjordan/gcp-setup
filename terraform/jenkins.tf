@@ -138,6 +138,12 @@ controller:
     value: "${var.oauth_client_secret}"
   - name: github_app_private_key
     value: "${var.github_app_private_key}"
+  - name: jenkins_api_key
+    value: "${var.jenkins_api_key}"
+  - name: claude_code_oauth_token
+    value: "${var.claude_code_oauth_token}"
+  - name: jira_api_key
+    value: "${var.jira_api_key}"
   ingress:
     annotations:
       kubernetes.io/ingress.global-static-ip-name: "${var.project_name}-jenkins-ip"
@@ -187,6 +193,16 @@ controller:
                   description: "GitHub app"
                   id: "github-app"
                   privateKey: $${github_app_private_key}
+              - string:
+                  id: "jenkins-api-key"
+                  secret: $${jenkins_api_key}
+              - string:
+                  id: "claude-code-oauth-token"
+                  secret: $${claude_code_oauth_token}
+              - usernamePassword:
+                  id: "jira-credentials"
+                  username: "${var.jira_api_username}"
+                  password: $${jira_api_key}
         jenkins:
           authorizationStrategy:
             globalMatrix:
@@ -212,6 +228,8 @@ controller:
                 value: "${var.project_name}"
               - key: "ROOT_DOMAIN"
                 value: "${var.dns_name}"
+              - key: "JIRA_CLOUD_ID"
+                value: "${var.jira_cloud_id}"
           numExecutors: 0
           primaryView:
             list:
@@ -225,9 +243,12 @@ controller:
               - "buildButton"
               - "favoriteColumn"
               jobNames:
-              - "chalk"
               - "chalk/main"
               - "chalk_base"
+              - "chalk"
+              - "majordomo"
+              - "majordomo-runner"
+              - "majordomo-worker"
               name: "Mainline"
               recurse: true
           securityRealm:
@@ -246,9 +267,12 @@ controller:
               - "buildButton"
               - "favoriteColumn"
               jobNames:
-              - "chalk"
               - "chalk/main"
               - "chalk_base"
+              - "chalk"
+              - "majordomo"
+              - "majordomo-runner"
+              - "majordomo-worker"
               name: "Mainline"
               recurse: true
           - all:
