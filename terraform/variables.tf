@@ -85,3 +85,10 @@ variable "jira_cloud_id" {
   description = "Jira Cloud ID"
   type        = string
 }
+
+variable "dolt_root_password" {
+  default     = ""
+  description = "Root password for the Dolt SQL server"
+  type        = string
+  sensitive   = true
+}

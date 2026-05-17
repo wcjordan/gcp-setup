@@ -230,6 +230,10 @@ controller:
                 value: "${var.dns_name}"
               - key: "JIRA_CLOUD_ID"
                 value: "${var.jira_cloud_id}"
+              - key: "BEADS_SERVER_HOST"
+                value: "dolt-server.default.svc.cluster.local"
+              - key: "BEADS_SERVER_PORT"
+                value: "3306"
           numExecutors: 0
           primaryView:
             list:
