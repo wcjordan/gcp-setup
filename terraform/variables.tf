@@ -69,6 +69,17 @@ variable "claude_code_oauth_token" {
   type        = string
 }
 
+variable "aws_ses_access_key_id" {
+  default     = ""
+  description = "AWS SES access key ID"
+  type        = string
+}
+variable "aws_ses_secret_access_key" {
+  default     = ""
+  description = "AWS SES secret access key"
+  type        = string
+}
+
 variable "jira_api_username" {
   default     = ""
   description = "Jira API username"

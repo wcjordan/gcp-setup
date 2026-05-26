@@ -142,6 +142,10 @@ controller:
     value: "${var.jenkins_api_key}"
   - name: claude_code_oauth_token
     value: "${var.claude_code_oauth_token}"
+  - name: aws_ses_access_key_id
+    value: "${var.aws_ses_access_key_id}"
+  - name: aws_ses_secret_access_key
+    value: "${var.aws_ses_secret_access_key}"
   - name: jira_api_key
     value: "${var.jira_api_key}"
   ingress:
@@ -199,6 +203,12 @@ controller:
               - string:
                   id: "claude-code-oauth-token"
                   secret: $${claude_code_oauth_token}
+              - string:
+                  id: "aws-ses-access-key-id"
+                  secret: $${aws_ses_access_key_id}
+              - string:
+                  id: "aws-ses-secret-access-key"
+                  secret: $${aws_ses_secret_access_key}
               - usernamePassword:
                   id: "jira-api-key"
                   username: "${var.jira_api_username}"
