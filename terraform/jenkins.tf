@@ -351,23 +351,23 @@ controller:
                       - headWildcardFilter:
                           includes: "main"
             - cachingConfiguration:
-              includedVersionsStr: "main"
-              refreshTimeMinutes: 0
-            defaultVersion: "main"
-            name: "jenkins-shared-library"
-            retriever:
-              modernSCM:
-                libraryPath: "jenkins-shared-library/"
-                scm:
-                  github:
-                    configuredByUrl: true
-                    credentialsId: "github-app"
-                    repoOwner: "wcjordan"
-                    repository: "gcp-setup"
-                    repositoryUrl: "https://github.com/wcjordan/gcp-setup"
-                    traits:
-                    - headWildcardFilter:
-                        includes: "main"
+                includedVersionsStr: "main"
+                refreshTimeMinutes: 0
+              defaultVersion: "main"
+              name: "jenkins-shared-library"
+              retriever:
+                modernSCM:
+                  libraryPath: "jenkins-shared-library/"
+                  scm:
+                    github:
+                      configuredByUrl: true
+                      credentialsId: "github-app"
+                      repoOwner: "wcjordan"
+                      repository: "gcp-setup"
+                      repositoryUrl: "https://github.com/wcjordan/gcp-setup"
+                      traits:
+                      - headWildcardFilter:
+                          includes: "main"
 YAML
   ]
 }
