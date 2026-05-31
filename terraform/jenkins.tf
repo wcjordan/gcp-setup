@@ -296,24 +296,6 @@ controller:
                 strategy:
                   specificUsersAuthorizationStrategy:
                     userid: "${var.admin_email}"
-        jobs:
-          - script: >
-              pipelineJob('jenkins-helm-image') {
-                definition {
-                  cpsScm {
-                    scm {
-                      git {
-                        remote {
-                          url('https://github.com/wcjordan/gcp-setup.git')
-                          credentials('github-app')
-                        }
-                        branches('*/main')
-                      }
-                    }
-                    scriptPath('jenkins/Jenkinsfile.helm-image')
-                  }
-                }
-              }
         unclassified:
           defaultFolderConfiguration:
             healthMetrics:
