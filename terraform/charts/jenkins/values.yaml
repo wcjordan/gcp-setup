@@ -13,7 +13,6 @@ controller:
     - github-checks
     - google-container-registry-auth
     - google-login
-    - job-dsl
     - git
     - kubernetes
     - kubernetes-credentials-provider
