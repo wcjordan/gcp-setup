@@ -349,7 +349,7 @@ controller:
                       repositoryUrl: "https://github.com/wcjordan/minordomo"
                       traits:
                       - headWildcardFilter:
-                          regex: "main"
+                          includes: "main"
             - cachingConfiguration:
               includedVersionsStr: "main"
               refreshTimeMinutes: 0
