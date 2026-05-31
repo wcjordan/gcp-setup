@@ -253,13 +253,14 @@ controller:
               - "buildButton"
               - "favoriteColumn"
               jobNames:
+              - "chalk"
               - "chalk/main"
               - "chalk_base"
-              - "chalk"
-              - "jenkins-helm-image"
-              - "majordomo"
-              - "majordomo-runner"
-              - "majordomo-worker"
+              - "majordomo/main"
+              - "minordomo-container-builder/main"
+              - "minordomo-plan/main"
+              - "minordomo-step/main"
+              - "minordomo-sweep/main"
               name: "Mainline"
               recurse: true
           securityRealm:
@@ -278,13 +279,14 @@ controller:
               - "buildButton"
               - "favoriteColumn"
               jobNames:
+              - "chalk"
               - "chalk/main"
               - "chalk_base"
-              - "chalk"
-              - "jenkins-helm-image"
-              - "majordomo"
-              - "majordomo-runner"
-              - "majordomo-worker"
+              - "majordomo/main"
+              - "minordomo-container-builder/main"
+              - "minordomo-plan/main"
+              - "minordomo-step/main"
+              - "minordomo-sweep/main"
               name: "Mainline"
               recurse: true
           - all:
@@ -329,14 +331,43 @@ controller:
             allPipelines: true
           globalLibraries:
             libraries:
-              - name: "jenkins-shared-library"
-                retriever:
-                  modernSCM:
-                    scm:
-                      git:
-                        remote: "https://github.com/wcjordan/gcp-setup.git"
-                        includes: "*"
-                    libraryPath: "jenkins-shared-library/"
+            - allowVersionOverride: false
+              cachingConfiguration:
+                includedVersionsStr: "main"
+                refreshTimeMinutes: 0
+              defaultVersion: "main"
+              implicit: true
+              name: "minordomo"
+              retriever:
+                modernSCM:
+                  scm:
+                    github:
+                      configuredByUrl: true
+                      credentialsId: "github-app"
+                      repoOwner: "wcjordan"
+                      repository: "minordomo"
+                      repositoryUrl: "https://github.com/wcjordan/minordomo"
+                      traits:
+                      - headWildcardFilter:
+                          regex: "main"
+            - cachingConfiguration:
+              includedVersionsStr: "main"
+              refreshTimeMinutes: 0
+            defaultVersion: "main"
+            name: "jenkins-shared-library"
+            retriever:
+              modernSCM:
+                libraryPath: "jenkins-shared-library/"
+                scm:
+                  github:
+                    configuredByUrl: true
+                    credentialsId: "github-app"
+                    repoOwner: "wcjordan"
+                    repository: "gcp-setup"
+                    repositoryUrl: "https://github.com/wcjordan/gcp-setup"
+                    traits:
+                    - headWildcardFilter:
+                        includes: "main"
 YAML
   ]
 }
