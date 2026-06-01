@@ -148,6 +148,8 @@ controller:
     value: "${var.aws_ses_secret_access_key}"
   - name: jira_api_key
     value: "${var.jira_api_key}"
+  - name: discord_webhook_url
+    value: "${var.discord_webhook_url}"
   ingress:
     annotations:
       kubernetes.io/ingress.global-static-ip-name: "${var.project_name}-jenkins-ip"
@@ -209,6 +211,9 @@ controller:
               - string:
                   id: "aws-ses-secret-access-key"
                   secret: $${aws_ses_secret_access_key}
+              - string:
+                  id: "discord-webhook-url"
+                  secret: $${discord_webhook_url}
               - usernamePassword:
                   id: "jira-api-key"
                   username: "${var.jira_api_username}"
