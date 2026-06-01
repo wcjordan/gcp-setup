@@ -91,6 +91,12 @@ variable "jira_api_key" {
   type        = string
 }
 
+variable "discord_webhook_url" {
+  default     = ""
+  description = "Discord webhook URL for notifications"
+  type        = string
+}
+
 variable "jira_cloud_id" {
   default     = ""
   description = "Jira Cloud ID"
