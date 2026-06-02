@@ -1,4 +1,11 @@
 def call(Map config) {
+    def context = config.get('context', '.')
+    def targetFlag = config.get('target', '') ? "--target ${config.get('target')}" : ''
+    def extraBuildArgs = config.get('extraBuildArgs', '')
+    def additionalCacheFromFlags = config.get('additionalCacheFrom', [])
+        .collect { "--cache-from type=registry,ref=${it}" }
+        .join(' ')
+
     container(config.get('containerName', 'dind')) {
         withCredentials([file(credentialsId: config.get('credentialsId', 'jenkins-gke-sa'), variable: 'GKE_SA_FILE')]) {
             sh """
@@ -16,9 +23,12 @@ def call(Map config) {
                 docker buildx build --push \\
                     --cache-to  type=registry,ref=${config.cacheRef},mode=max \\
                     --cache-from type=registry,ref=${config.cacheRef} \\
+                    ${additionalCacheFromFlags} \\
                     -f ${config.dockerfile} \\
                     -t ${config.imageTag} \\
-                    .
+                    ${targetFlag} \\
+                    ${extraBuildArgs} \\
+                    ${context}
             """
         }
     }
