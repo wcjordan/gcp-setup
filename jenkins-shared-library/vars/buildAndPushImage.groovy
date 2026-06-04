@@ -10,8 +10,10 @@ def call(Map config) {
         withCredentials([file(credentialsId: config.get('credentialsId', 'jenkins-gke-sa'), variable: 'GKE_SA_FILE')]) {
             sh """
                 set -euo pipefail
-                apk add --no-cache bash curl python3
-                curl -fsSL https://sdk.cloud.google.com | bash -s -- --disable-prompts
+                if [ ! -d "\$HOME/google-cloud-sdk" ]; then
+                    apk add --no-cache bash curl python3
+                    curl -fsSL https://sdk.cloud.google.com | bash -s -- --disable-prompts
+                fi
                 export PATH="\$HOME/google-cloud-sdk/bin:\$PATH"
                 gcloud auth activate-service-account --key-file "\$GKE_SA_FILE"
                 gcloud auth configure-docker ${config.garHost} --quiet
