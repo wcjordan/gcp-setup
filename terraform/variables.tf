@@ -97,6 +97,12 @@ variable "discord_webhook_url" {
   type        = string
 }
 
+variable "claude_org_id" {
+  default     = ""
+  description = "Claude organization ID"
+  type        = string
+}
+
 variable "jira_cloud_id" {
   default     = ""
   description = "Jira Cloud ID"
