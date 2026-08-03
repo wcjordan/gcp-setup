@@ -1,3 +1,16 @@
+moved {
+  from = kubernetes_namespace.dev-namespace
+  to   = kubernetes_namespace_v1.dev-namespace
+}
+moved {
+  from = kubernetes_namespace.test-namespace
+  to   = kubernetes_namespace_v1.test-namespace
+}
+moved {
+  from = kubernetes_namespace.prod-namespace
+  to   = kubernetes_namespace_v1.prod-namespace
+}
+
 # GKE cluster
 resource "google_container_cluster" "primary" {
   name = "${var.project_name}-gke"
@@ -122,7 +135,7 @@ resource "kubernetes_annotations" "default-namespace-annotation" {
     "cnrm.cloud.google.com/project-id" = var.project_id
   }
 }
-resource "kubernetes_namespace" "dev-namespace" {
+resource "kubernetes_namespace_v1" "dev-namespace" {
   metadata {
     name = "dev"
     annotations = {
@@ -130,7 +143,7 @@ resource "kubernetes_namespace" "dev-namespace" {
     }
   }
 }
-resource "kubernetes_namespace" "test-namespace" {
+resource "kubernetes_namespace_v1" "test-namespace" {
   metadata {
     name = "test"
     annotations = {
@@ -138,7 +151,7 @@ resource "kubernetes_namespace" "test-namespace" {
     }
   }
 }
-resource "kubernetes_namespace" "prod-namespace" {
+resource "kubernetes_namespace_v1" "prod-namespace" {
   metadata {
     name = "prod"
     annotations = {
