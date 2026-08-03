@@ -1,16 +1,3 @@
-moved {
-  from = kubernetes_namespace.dev-namespace
-  to   = kubernetes_namespace_v1.dev-namespace
-}
-moved {
-  from = kubernetes_namespace.test-namespace
-  to   = kubernetes_namespace_v1.test-namespace
-}
-moved {
-  from = kubernetes_namespace.prod-namespace
-  to   = kubernetes_namespace_v1.prod-namespace
-}
-
 # GKE cluster
 resource "google_container_cluster" "primary" {
   name = "${var.project_name}-gke"

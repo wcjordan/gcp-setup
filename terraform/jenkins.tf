@@ -1,24 +1,3 @@
-moved {
-  from = kubernetes_namespace.jenkins-worker
-  to   = kubernetes_namespace_v1.jenkins-worker
-}
-moved {
-  from = kubernetes_namespace.jenkins-namespace
-  to   = kubernetes_namespace_v1.jenkins-namespace
-}
-moved {
-  from = kubernetes_role.jenkins-secrets-role
-  to   = kubernetes_role_v1.jenkins-secrets-role
-}
-moved {
-  from = kubernetes_role_binding.jenkins-secrets-role-binding
-  to   = kubernetes_role_binding_v1.jenkins-secrets-role-binding
-}
-moved {
-  from = kubernetes_secret.jenkins-gke-sa
-  to   = kubernetes_secret_v1.jenkins-gke-sa
-}
-
 # DNS entry for jenkins
 resource "google_compute_global_address" "jenkins_static_ip" {
   name = "${var.project_name}-jenkins-ip"
