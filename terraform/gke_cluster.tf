@@ -1,3 +1,35 @@
+import {
+  to = kubernetes_namespace_v1.dev-namespace
+  id = "dev"
+}
+import {
+  to = kubernetes_namespace_v1.test-namespace
+  id = "test"
+}
+import {
+  to = kubernetes_namespace_v1.prod-namespace
+  id = "prod"
+}
+
+removed {
+  from = kubernetes_namespace.dev-namespace
+  lifecycle {
+    destroy = false
+  }
+}
+removed {
+  from = kubernetes_namespace.test-namespace
+  lifecycle {
+    destroy = false
+  }
+}
+removed {
+  from = kubernetes_namespace.prod-namespace
+  lifecycle {
+    destroy = false
+  }
+}
+
 # GKE cluster
 resource "google_container_cluster" "primary" {
   name = "${var.project_name}-gke"
