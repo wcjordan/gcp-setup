@@ -108,3 +108,15 @@ variable "jira_cloud_id" {
   description = "Jira Cloud ID"
   type        = string
 }
+
+variable "discord_bot_token" {
+  default     = ""
+  description = "Discord bot token"
+  type        = string
+}
+
+variable "discord_channel_id" {
+  default     = ""
+  description = "Discord channel ID for notifications"
+  type        = string
+}
