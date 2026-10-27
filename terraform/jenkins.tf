@@ -112,6 +112,28 @@ resource "kubernetes_secret_v1" "jenkins-gke-sa" {
   }
 }
 
+resource "google_compute_managed_ssl_certificate" "jenkins" {
+  name = "${var.project_name}-jenkins-cert"
+  managed {
+    domains = ["jenkins.${var.dns_name}"]
+  }
+}
+
+resource "kubectl_manifest" "jenkins-frontend-config" {
+  yaml_body = <<YAML
+apiVersion: networking.gke.io/v1beta1
+kind: FrontendConfig
+metadata:
+  name: jenkins-frontend-config
+  namespace: jenkins-controller
+spec:
+  redirectToHttps:
+    enabled: true
+    responseCodeName: MOVED_PERMANENTLY_DEFAULT
+YAML
+  depends_on = [kubernetes_namespace_v1.jenkins-namespace]
+}
+
 # Jenkins Helm install
 resource "helm_release" "jenkins" {
   name       = "jenkins"
@@ -155,6 +177,8 @@ controller:
   ingress:
     annotations:
       kubernetes.io/ingress.global-static-ip-name: "${var.project_name}-jenkins-ip"
+      networking.gke.io/managed-certificates: "${var.project_name}-jenkins-cert"
+      networking.gke.io/v1beta1.FrontendConfig: "jenkins-frontend-config"
     hostname: "jenkins.${var.dns_name}"
   probes:
     startupProbe:
