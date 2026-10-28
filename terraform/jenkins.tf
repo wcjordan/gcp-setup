@@ -340,7 +340,7 @@ controller:
             - "primaryBranchHealthMetric"
           location:
             adminAddress: "${var.admin_email}"
-            url: "http://jenkins.${var.dns_name}/"
+            url: "https://jenkins.${var.dns_name}/"
           throttleJobProperty:
             categories:
             - categoryName: "chalk-ci"
