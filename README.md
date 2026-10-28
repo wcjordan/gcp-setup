@@ -109,6 +109,10 @@ Your DNS NS data for this step can be found on [the GCloud DNS page](https://con
 ## Setup Jenkins
 Terraform will create a static IP, DNS entry, and install the Helm chart
 
+Jenkins is served over HTTPS using GCP Managed SSL Certificates (not cert-manager). Although cert-manager is installed, its ClusterIssuer uses `ingressClassName: nginx` which doesn't match Jenkins' GCP global load balancer ingress. GCP Managed Certs integrate natively with the GCP ingress and handle auto-renewal.
+
+After initial provisioning, GCP Managed Certificate issuance can take 10–60 minutes. Jenkins will be accessible over HTTP during that window and will redirect to HTTPS once the certificate is active.
+
 ### Add Builds
 See instructions within each repos README
 
