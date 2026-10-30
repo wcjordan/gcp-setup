@@ -177,7 +177,7 @@ controller:
   ingress:
     annotations:
       kubernetes.io/ingress.global-static-ip-name: "${var.project_name}-jenkins-ip"
-      networking.gke.io/managed-certificates: "${var.project_name}-jenkins-cert"
+      ingress.gcp.kubernetes.io/pre-shared-cert: "${var.project_name}-jenkins-cert"
       networking.gke.io/v1beta1.FrontendConfig: "jenkins-frontend-config"
     hostname: "jenkins.${var.dns_name}"
   probes:
