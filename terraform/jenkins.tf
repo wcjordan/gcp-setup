@@ -125,13 +125,12 @@ apiVersion: networking.gke.io/v1beta1
 kind: FrontendConfig
 metadata:
   name: jenkins-frontend-config
-  namespace: jenkins-controller
+  namespace: default
 spec:
   redirectToHttps:
     enabled: true
     responseCodeName: MOVED_PERMANENTLY_DEFAULT
 YAML
-  depends_on = [kubernetes_namespace_v1.jenkins-namespace]
 }
 
 # Jenkins Helm install
