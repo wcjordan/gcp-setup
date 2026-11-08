@@ -189,16 +189,16 @@ controller:
       memory: 2048Mi
     limits:
       cpu: 500m
-      memory: 4096Mi
+      memory: 2048Mi
   sidecars:
     configAutoReload:
       resources:
         requests:
           cpu: 50m
-          memory: 100Mi
+          memory: 500Mi
         limits:
           cpu: 50m
-          memory: 100Mi
+          memory: 500Mi
   overwritePlugins: true
   installLatestSpecifiedPlugins: true
   JCasC:
