@@ -138,7 +138,7 @@ resource "helm_release" "jenkins" {
   name       = "jenkins"
   chart      = "jenkins"
   repository = "https://charts.jenkins.io"
-  version    = "5.9.45"
+  version    = "5.10.13"
   timeout    = 900
 
   # Wait for node pool to exist before installing Jenkins to avoid a timeout
