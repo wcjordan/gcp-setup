@@ -14,7 +14,7 @@ terraform {
     }
     kubernetes = {
       source  = "hashicorp/kubernetes"
-      version = "3.0.1"
+      version = "3.5.0"
     }
   }
 
@@ -30,7 +30,7 @@ provider "google" {
 }
 
 provider "kubectl" {
-  host                   = google_container_cluster.primary.endpoint
+  host                   = "https://${google_container_cluster.primary.endpoint}"
   token                  = data.google_client_config.current.access_token
   client_certificate     = base64decode(google_container_cluster.primary.master_auth.0.client_certificate)
   client_key             = base64decode(google_container_cluster.primary.master_auth.0.client_key)
@@ -39,7 +39,7 @@ provider "kubectl" {
 }
 
 provider "kubernetes" {
-  host                   = google_container_cluster.primary.endpoint
+  host                   = "https://${google_container_cluster.primary.endpoint}"
   token                  = data.google_client_config.current.access_token
   client_certificate     = base64decode(google_container_cluster.primary.master_auth.0.client_certificate)
   client_key             = base64decode(google_container_cluster.primary.master_auth.0.client_key)
@@ -48,7 +48,7 @@ provider "kubernetes" {
 
 provider "helm" {
   kubernetes = {
-    host                   = google_container_cluster.primary.endpoint
+    host                   = "https://${google_container_cluster.primary.endpoint}"
     token                  = data.google_client_config.current.access_token
     client_certificate     = base64decode(google_container_cluster.primary.master_auth.0.client_certificate)
     client_key             = base64decode(google_container_cluster.primary.master_auth.0.client_key)
