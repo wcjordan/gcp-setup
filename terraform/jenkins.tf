@@ -189,7 +189,7 @@ controller:
       memory: 2048Mi
     limits:
       cpu: 500m
-      memory: 2048Mi
+      memory: 4096Mi
   sidecars:
     configAutoReload:
       resources:
