@@ -107,8 +107,7 @@ spec:
       name: letsencrypt-cluster-cert-issuer-private-key
     solvers:
     - http01:
-        ingress:
-          ingressClassName: nginx
+        ingress: {}
 YAML
 
   depends_on = [google_container_node_pool.primary_nodes]
