@@ -173,6 +173,8 @@ controller:
     value: "${var.discord_webhook_url}"
   - name: claude_org_id
     value: "${var.claude_org_id}"
+  - name: discord_bot_token
+    value: "${var.discord_bot_token}"
   ingress:
     annotations:
       kubernetes.io/ingress.global-static-ip-name: "${var.project_name}-jenkins-ip"
@@ -242,6 +244,9 @@ controller:
               - string:
                   id: "claude-org-id"
                   secret: $${claude_org_id}
+              - string:
+                  id: "discord-bot-token"
+                  secret: $${discord_bot_token}
               - usernamePassword:
                   id: "jira-api-key"
                   username: "${var.jira_api_username}"
@@ -273,6 +278,8 @@ controller:
                 value: "${var.dns_name}"
               - key: "JIRA_CLOUD_ID"
                 value: "${var.jira_cloud_id}"
+              - key: "DISCORD_CHANNEL_ID"
+                value: "${var.discord_channel_id}"
           numExecutors: 0
           primaryView:
             list:
