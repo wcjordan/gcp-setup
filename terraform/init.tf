@@ -6,7 +6,7 @@ terraform {
     }
     helm = {
       source  = "hashicorp/helm"
-      version = "2.17.0"
+      version = "3.3.0"
     }
     kubectl = {
       source  = "gavinbunney/kubectl"
@@ -47,7 +47,7 @@ provider "kubernetes" {
 }
 
 provider "helm" {
-  kubernetes {
+  kubernetes = {
     host                   = google_container_cluster.primary.endpoint
     token                  = data.google_client_config.current.access_token
     client_certificate     = base64decode(google_container_cluster.primary.master_auth.0.client_certificate)
