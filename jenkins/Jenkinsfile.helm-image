@@ -17,7 +17,7 @@ pipeline {
                         spec:
                           containers:
                           - name: dind
-                            image: docker:27-dind
+                            image: docker:29-dind
                             securityContext:
                               privileged: true
                             resources:
